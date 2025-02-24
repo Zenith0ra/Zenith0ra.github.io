@@ -1,4 +1,4 @@
-# Zenith-Hlz.github.io
+# Zenith0ra.github.io
 
 My name is **Linzhi Hou (侯林之)**. This is the repository for my personal website.
 

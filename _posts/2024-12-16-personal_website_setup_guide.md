@@ -23,8 +23,8 @@ Before we begin, let's introduce the core tools this site depends on:
 
 Next, let's proceed with the initial environment setup. As engineering students know, setting up the code compilation environment is often the most tedious part. Once completed, the subsequent workflow will be very smooth. Please follow these steps carefully:
 
-- Log in to [GitHub](https://github.com) and create a new repository. Name the repository `username.github.io`, where `username` is replaced with your GitHub username. For example, if your username is `Zenith-Hlz`, the repository name should be `Zenith-Hlz.github.io`.
-- If you find it difficult to build a repository from scratch, you can directly fork the author's [repository](https://github.com/Zenith-Hlz/Zenith-Hlz.github.io) and modify it according to your needs. Here are the specific steps:
+- Log in to [GitHub](https://github.com) and create a new repository. Name the repository `username.github.io`, where `username` is replaced with your GitHub username. For example, if your username is `Zenith0ra`, the repository name should be `Zenith0ra.github.io`.
+- If you find it difficult to build a repository from scratch, you can directly fork the author's [repository](https://github.com/Zenith0ra/Zenith0ra.github.io) and modify it according to your needs. Here are the specific steps:
     - ~~First, click the Star button in the top right to support the author's work~~ 🥰
     - **Key step:** Click `Fork` in the top right to enter the Fork configuration interface.
     - Set the Repository name to: `[your username].github.io`
@@ -112,7 +112,7 @@ owner:
   avatar: avatar.jpg
   bio: I am an Enthusiastic Computer Science and Technology student at THU. Passionate about coding, AI, and open-source projects.
   email: hlz23@mails.tsinghua.edu.cn
-  github: Zenith-Hlz
+  github: Zenith0ra
   bilibili: 667036156
   zhihu: https://www.zhihu.com/people/lin-zhi-cang-qiong
 
@@ -189,7 +189,7 @@ Finally, let's explain how to configure a custom domain. If you have your own do
   - Set the host record to `www` and set the record value to `[your username].github.io`, then save the settings.
 
     ```
-    CNAME   www   Zenith-Hlz.github.io
+    CNAME   www   Zenith0ra.github.io
     ```
 
   - Add the following 4 A records, set the host record to `@`, and set the record value to GitHub Pages' IP addresses
@@ -233,6 +233,6 @@ At the same time, during the process of building a personal website, you can lea
 
 ## Final Words
 
-Finally, thank you for reading this article. If my blog has successfully helped you build your Jekyll personal website, please give [this repository](https://github.com/Zenith-Hlz/Zenith-Hlz.github.io) a `star` in the upper right corner to encourage me to continue maintaining this project.
+Finally, thank you for reading this article. If my blog has successfully helped you build your Jekyll personal website, please give [this repository](https://github.com/Zenith0ra/Zenith0ra.github.io) a `star` in the upper right corner to encourage me to continue maintaining this project.
 
 **Thank you for reading this far, until we meet again!**
