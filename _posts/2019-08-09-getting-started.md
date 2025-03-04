@@ -7,7 +7,6 @@ author: cotes
 date: 2019-08-09 20:55:00 +0800
 categories: [Tutorial, Chirpy Guide]
 tags: [getting-started, jekyll, github-pages, setup]
-media_subpath: '/posts/20180809'
 ---
 
 ## Creating a Site Repository
