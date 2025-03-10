@@ -1,7 +1,7 @@
 ---
 title: Customize the Favicon
 date: 2019-08-11 00:34:00 +0800
-categories: [Tutorial, Website Customization]
+categories: [Blog and Writing, Blog Setup and Maintenance]
 tags: [favicon, chirpy-theme, jekyll, website-setup]
 ---
 

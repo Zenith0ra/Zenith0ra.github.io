@@ -1,7 +1,7 @@
 ---
-title: Sorting - Shellsort
+title: Sorting - Shell Sort
 description: 本文详细介绍了希尔排序（Shellsort）算法的原理与实现。希尔排序通过递减增量（diminishing increment）策略，将序列划分为多个子序列并逐步排序，最终完成整体排序。
-categories: [Course Notes, Data Structure and Algorithm]
+categories: [Computer Science and Technology, Data Structure and Algorithm]
 tags: [algorithms, data-structures, sorting, shellsort, tsinghua]
 math: true
 ---

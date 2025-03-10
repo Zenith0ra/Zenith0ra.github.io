@@ -1,7 +1,7 @@
 ---
 title: 变分自编码器（VAE）
 description: 本文详细介绍了变分自编码器（VAE）的理论基础、数学推导及其实现方法，涵盖从动机到条件VAE的扩展，并探讨了VAE在生成模糊图像方面的原因。通过清晰的解释和代码实现，帮助读者深入理解VAE的设计原理及其在深度学习中的应用。
-categories: [Computer Science, Computer Vision]
+categories: [Computer Science and Technology, Computer Graphics]
 tags: [vae, variational-autoencoder, generative-model, deep-learning, image-generation]
 math: true
 ---

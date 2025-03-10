@@ -1,7 +1,7 @@
 ---
 title: String - BM Algorithm
 description: 本文详细介绍了Boyer-Moore（BM）字符串匹配算法，帮助读者深入理解其高效的工作原理。BM算法通过坏字符规则和好后缀规则，能够在匹配过程中跳过不必要的比较，从而在大多数情况下比KMP等算法表现更优。
-categories: [Course Notes, Data Structure and Algorithm]
+categories: [Computer Science and Technology, Data Structure and Algorithm]
 tags: [algorithms, data-structures, string-matching, boyer-moore, tsinghua]
 ---
 

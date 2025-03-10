@@ -1,7 +1,7 @@
 ---
 title: Writing a New Post
 date: 2019-08-08 14:10:00 +0800
-categories: [Tutorial, Blogging]
+categories: [Blog and Writing, Blog Setup and Maintenance]
 tags: [writing, jekyll, guide, markdown]
 render_with_liquid: false
 math: true

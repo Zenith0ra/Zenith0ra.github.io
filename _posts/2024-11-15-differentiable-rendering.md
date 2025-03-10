@@ -1,7 +1,7 @@
 ---
 title: 可微渲染技术原理及应用
 description: 本文深入探讨了可微渲染技术的原理及其应用，重点介绍了如何将高级光照模型集成到神经网络中以实现更逼真的图像合成。通过路径追踪和蒙特卡罗方法，文章详细解释了可微渲染的实现过程，并探讨了其在逆向图形学中的应用，如3D重建和光传输优化。
-categories: [Computer Science, Computer Graphics]
+categories: [Computer Science and Technology, Computer Graphics]
 tags: [differentiable-rendering, path-tracing, monte-carlo, neural-networks, inverse-graphics, 3d-reconstruction]
 math: true
 ---

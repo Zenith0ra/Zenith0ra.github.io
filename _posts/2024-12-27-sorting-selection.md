@@ -1,7 +1,7 @@
 ---
 title: Sorting - Selection
 description: 本文详细介绍了选取算法（Selection Algorithm），重点讨论了如何在无序向量中高效地找到第k小的元素（k-selection）、中位数（median）以及众数（majority）。
-categories: [Course Notes, Data Structure and Algorithm]
+categories: [Computer Science and Technology, Data Structure and Algorithm]
 tags: [algorithms, data-structures, sorting, selection, tsinghua]
 math: true
 ---

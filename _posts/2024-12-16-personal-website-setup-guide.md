@@ -1,7 +1,7 @@
 ---
 title: Personal Website Setup Guide
 description: A complete walkthrough of setting up your own personal website from scratch — empowering you to showcase your work and ideas online.
-categories: [Tutorial, Web Development]
+categories: [Computer Science and Technology, Programming and Development]
 tags: [website-setup, jekyll, minimal-mistakes, static-site]
 ---
 

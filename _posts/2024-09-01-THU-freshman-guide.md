@@ -1,7 +1,7 @@
 ---
 title: THU 新生指南
 description: 为清华大学新生提供的一份全面的入学指南，涵盖了从入学准备到学习、生活的各个方面。
-categories: [University Guide, THU]
+categories: [Education and Guides, University Life]
 tags: [tsinghua, education, resources, student-life]
 ---
 

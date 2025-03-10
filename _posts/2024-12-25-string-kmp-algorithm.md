@@ -1,7 +1,7 @@
 ---
 title: String - KMP Algorithm
 description: 本文详细介绍了KMP（Knuth-Morris-Pratt）字符串匹配算法，帮助读者深入理解其高效的工作原理。KMP算法通过预处理模式串，构建部分匹配表（PMT）和next数组，能够在匹配过程中跳过不必要的比较，从而避免主串指针回退，显著提高匹配效率。
-categories: [Course Notes, Data Structure and Algorithm]
+categories: [Computer Science and Technology, Data Structure and Algorithm]
 tags: [algorithms, data-structures, string-matching, kmp, tsinghua]
 ---
 

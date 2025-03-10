@@ -1,7 +1,7 @@
 ---
 title: Makefile Tutorial By Example
 description: A step-by-step guide to mastering Makefiles with practical examples for seamless project management.
-categories: [Computer Science, Software Engineering]
+categories: [Computer Science and Technology, Programming and Development]
 tags: [makefile, software-engineering, project-management, compilation, automation]
 math: true
 ---

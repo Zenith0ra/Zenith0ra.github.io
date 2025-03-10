@@ -1,7 +1,7 @@
 ---
 title: 计算思维的应用 —— 粉碎后文件的复原问题
 description: 本文探讨了粉碎后文件的复原问题，结合历史背景与现实需求，提出了通过计算思维提升古籍修复等行业工作效率的可能性。文章详细分析了碎片拼接的现有方法、子问题及其解决方案，包括碎片特征提取、边缘匹配度建模、优先级评估等，展示了计算机视觉与智能
-categories: [Course Notes, Computational Thinking]
+categories: [Education and Guides, Coursework]
 tags: [algorithm, document-reconstruction, computer-vision, image-processing, computational-thinking, tsinghua]
 math: true
 ---

@@ -1,7 +1,7 @@
 ---
 title: 成都实践
 description: 当DeepSeek的神经网络浸入郫县豆瓣的赤色河流，这座用火锅蒸腾大数据的天府之城，便生长出了赛博格调的游记注脚。八位清华学子在算法与花椒的协奏中，解码着蓉城的折叠基因——从智算中心的量子涟漪到三星堆的青铜余温，从村头田埂的治理算法到玉林路小酒馆的离散余弦变换。这卷AI酿造的巴蜀行记，既是给成都的情书，也是给技术时代的一碗冰粉：清甜解腻，却暗藏醪糟的微醺后劲。
-categories: [Personal, Travel]
+categories: [Personal and Life, Travel and Experience]
 tags: []
 ---
 

@@ -1,7 +1,7 @@
 ---
-title: Sorting - QuickSort
+title: Sorting - Quick Sort
 description: 本文详细介绍了快速排序（QuickSort）算法的核心原理与实现。快速排序通过分治策略，选取并培养轴点（pivot），将序列划分为左右子序列并递归排序。
-categories: [Course Notes, Data Structure and Algorithm]
+categories: [Computer Science and Technology, Data Structure and Algorithm]
 tags: [algorithms, data-structures, sorting, quicksort, tsinghua]
 math: true
 ---
