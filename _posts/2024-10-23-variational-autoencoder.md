@@ -14,7 +14,7 @@ math: true
 
 ## 2. Motivation  
 
-![]({{ site.url }}/assets/img/VAE/v2-012c9ea0f8b3e93079fb77cd39f7e88f_1440w.jpg)  
+![]({{ site.url }}/assets/img/2024-10-23-variational-autoencoder/v2-012c9ea0f8b3e93079fb77cd39f7e88f_1440w.jpg)  
 在说VAE之前，自然要先说到传统的自编码器 (Autoencoder)。上图即是一个自编码的实例。自编码器类似于一个非线性的PCA，是一个利用神经网络来给复杂数据降维的模型。现在我们记 $ X $ 为整个数据集的集合， $ x_i $ 是数据集中的一个样本。
 
 自编码器包含一个编码器 $ z = g(X) $ ，它的输出 $ z $ 我们称作编码， $ z $ 的维度往往远远小于输入 $ X $ 的维度。它还包含一个解码器 $ \tilde{X} = f(z) $ ，这个解码器能够通过编码 $ z $ 得到 $ \tilde{X}。 $
@@ -50,7 +50,7 @@ math: true
 
 首先，让我们从生成模型的角度来考虑Decoder的架构。
 
-![]({{ site.url }}/assets/img/VAE/v2-037e3122c8807642b3bdf12ae55bc6ca_1440w.jpg)  
+![]({{ site.url }}/assets/img/2024-10-23-variational-autoencoder/v2-037e3122c8807642b3bdf12ae55bc6ca_1440w.jpg)  
 上图是一个Decoder架构的示意图。我们给Decoder输入一个从 $ \mathcal{N}(0, I) $ 中采样得到的 $ z_i， $ 其实是希望由 $ \theta $ 参数化的Decoder能够学会一个映射，输出 $ z_i $ 对应的 $ X $ 的分布，即 $ p_{\theta}(X \mid z_i)。 $
 
 让我们假设，给定任意 $ z_i $ 后， $ X $ 都服从某个各维度独立的多元高斯分布，即：
@@ -71,7 +71,7 @@ $$
 
 对于一个生成模型，我们的终极目标是什么？对，我们就是想对数据本身的分布 $ p(X) $ 进行建模。如果能成功得到一个逼近真实分布 $ p(X) $ 的 $ p_{\theta}(X)， $ 那么我们就能从中进行采样，生成一些可能的数据点。
 
-![]({{ site.url }}/assets/img/VAE/v2-affdb37eb7100c5b2f2044e0764f5488_1440w.jpg)  
+![]({{ site.url }}/assets/img/2024-10-23-variational-autoencoder/v2-affdb37eb7100c5b2f2044e0764f5488_1440w.jpg)  
 如上图，我们举个当 $ X $ 代表所有宝可梦的图片的例子。在得到 $ p_{\theta}(X) $ 后，我们就可以生成一些令 $ p_{\theta}(x_i) $ 比较大的 $ x_i $ ，这些 $ x_i $ 就很可能会是正常的宝可梦的图片。
 
 现在的问题就是，我们怎么对 $ p_{\theta}(X) $ 进行建模呢？
@@ -98,7 +98,7 @@ $$
 
 具体来说，我们怎么在Encoder中利用后验分布呢？假设我们现在有后验分布 $ p_{\theta}(z \mid x_i)， $ 这样的话，如下图，每次前向传播的时候，我们可以先将 $ x_i $ 喂给Encoder，算出 $ z\mid x_i $ 服从的分布。之后，我们就可以直接在这个分布中采样出 $ z_i， $ 喂给Decoder，然后得到 $ X\mid z_i $ 的分布，最后基于MLE优化模型。
 
-![]({{ site.url }}/assets/img/VAE/v2-3db4962354040c44c110054842f1cd2e_1440w.jpg)  
+![]({{ site.url }}/assets/img/2024-10-23-variational-autoencoder/v2-3db4962354040c44c110054842f1cd2e_1440w.jpg)  
 在这个策略下，从 $ p_{\theta}(z \mid x_i) $ 中采样出来的 $ z_i $ 几乎都会和 $ x_i $ 相关的，对比之前，我们可能就省去了很多采样的步骤，极大的提高了效率。
 
 那现在的问题就是，我们怎么计算 $ p_{\theta}(z \mid x_i) $ 呢？我们不妨先尝试下贝叶斯公式：
@@ -127,7 +127,7 @@ $$
 
 下图即是VAE的架构示例。其中 $ x_i^{(j)} $ 代表第 $ i $ 个数据点的第 $ j $ 的特征。
 
-![]({{ site.url }}/assets/img/VAE/v2-4c21069ffb00d1bc8b29c30410982db8_1440w.jpg)  
+![]({{ site.url }}/assets/img/2024-10-23-variational-autoencoder/v2-4c21069ffb00d1bc8b29c30410982db8_1440w.jpg)  
 总结一下VAE的架构：
 
 1. 我们首先给Encoder输入一个数据点 $ x_i， $ 通过神经网络，我们得到隐变量 $ z $ 服从的近似后验分布 $ q_{\phi}(z \mid x_i) $ 的参数。我们往往认为后验分布是一个各维度独立的高斯分布，因此令Encoder输出 $ z\mid x_i $ 服从的高斯分布的参数 $ \sigma_i^2 $ 和 $ \mu_i $ 即可。
@@ -155,7 +155,7 @@ $$
 
 利用了Reparameterization Trick后，VAE的架构变成了下图中的模样，其中 $ \epsilon_i $ 可以看作是伴随 $ z_i $ 喂给Decoder的一个特征。这样一来，这个架构的前向、反向传播就都能跑通了。
 
-![]({{ site.url }}/assets/img/VAE/v2-5f84bd74113db053bba2168905fa6c01_1440w.jpg)  
+![]({{ site.url }}/assets/img/2024-10-23-variational-autoencoder/v2-5f84bd74113db053bba2168905fa6c01_1440w.jpg)  
 ### 3.6 Evidence Lower Bound  
 
 好了，我们已经把VAE的架构定下来了。现在我们只要顺着3.2节中MLE的思想，然后在最大化 $ \log p_{\theta}(X) $ 时，加入变分推断的思想，引入ELBO (Evidence Lower Bound)，我们就能得到一个靠谱的目标函数了。
@@ -294,7 +294,7 @@ CVAE的思路非常简单，这里我们简单介绍一下。
 
 下图是我在MNIST上跑的一组示例。
 
-![]({{ site.url }}/assets/img/VAE/v2-f42e6df980f6d9c0f922209107c261dc_1440w.jpg)  
+![]({{ site.url }}/assets/img/2024-10-23-variational-autoencoder/v2-f42e6df980f6d9c0f922209107c261dc_1440w.jpg)  
 也许我们会注意到，VAE的实现中，人们往往令Encoder输出 $ \log \sigma^2， $ 而不直接输出 $ \sigma。 $ 这是因为根据定义，我们必须让模型输出 $ \sigma \geq 0。 $ 出于方便，我们通过取对数后再取指数的方法，获得 $ \sigma。 $ 而取平方只是为了计算损失的时候不再需要取平方。
 
 除此之外，在VAE损失函数的实现中，有一个更需要注意的地方。我们先把之前推的损失函数抄下来：
