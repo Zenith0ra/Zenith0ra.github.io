@@ -139,7 +139,7 @@ void Vector<T>::quickSort( Rank lo, Rank hi ) { //0 <= lo < hi <= size
 2. **考查长度为 n 的序列**，算法执行过程分为三个阶段：
 
 #### 第一阶段：初始划分
-- 经过第一次迭代(划分)后， $ \vert Task \vert $ = 2
+- 经过第一次迭代(划分)后， $\vert Task \vert$ = 2
 - 栈顶子任务 V 必是轻的： $ \vert V \vert $ = v ≤ [n/2]
 - 栈底子任务 U 必有削减： $ \vert U \vert $ = u ≤ n-1 < n
 

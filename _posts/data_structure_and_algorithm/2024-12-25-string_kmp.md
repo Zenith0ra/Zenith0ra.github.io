@@ -7,22 +7,6 @@ tags: [algorithms, data-structures, string-matching, kmp, tsinghua]
 
 [字符串匹配](https://en.wikipedia.org/wiki/String_searching_algorithm)是计算机的基本任务之一。举例来说，有一个字符串"`BBC ABCDAB ABCDABCDABDE`"，我们想知道，里面是否包含另一个字符串"`ABCDABD`"？许多算法可以完成这个任务，[Knuth-Morris-Pratt算法](https://en.wikipedia.org/wiki/Knuth–Morris–Pratt_algorithm)（简称KMP）是最常用的之一。它以三个发明者命名，起头的那个K就是著名科学家Donald Knuth。虽然 KMP 算法高效且经典，但由于逻辑稍微复杂，理解起来并不容易。本文将用通俗的语言，为你拆解 KMP 算法的核心思想和应用。
 
-  - [低效的暴力匹配算法](#低效的暴力匹配算法)
-  - [KMP 算法的基本思想](#kmp-算法的基本思想)
-  - [部分匹配表的生成](#部分匹配表的生成)
-  - [PMT 和 next 的关系](#pmt-和-next-的关系)
-  - [next 数组的构造](#next-数组的构造)
-  - [next 数组的优化](#next-数组的优化)
-    - [优化前的 `next` 数组问题](#优化前的-next-数组问题)
-    - [优化后的 `next` 数组求解](#优化后的-next-数组求解)
-    - [如何快速心算优化后的 `next` 数组？](#如何快速心算优化后的-next-数组)
-    - [优化后的匹配过程](#优化后的匹配过程)
-  - [时间复杂度：O(n + m) 的分摊分析](#时间复杂度on--m-的分摊分析)
-    - [聚合分析 (Aggregate Analysis)](#聚合分析-aggregate-analysis)
-    - [记账分析 (Accounting Analysis)](#记账分析-accounting-analysis)
-- [总结](#总结)
-      - [优化后的优点](#优化后的优点)
-
 ## 低效的暴力匹配算法
 
 首先，我们来看一个简单但低效的字符串匹配方法：暴力匹配。
@@ -103,27 +87,27 @@ TABLE:   0000120
 
 因为 `6 - 2 = 4`，所以将搜索词向后移动4位。
 
-    ```text
-    BBC ABCDAB ABCDABCDABDE
-              |
-            ABCDABD
-    ```
+```text
+BBC ABCDAB ABCDABCDABDE
+            |
+        ABCDABD
+```
 
 空格与Ｃ不匹配，搜索词还要继续往后移。这时，已匹配的字符数为2（"AB"），对应的"部分匹配值"为0。所以，`移动位数 = 2 - 0`，结果为 2，于是将搜索词向后移2位。
 
-    ```text
-    BBC ABCDAB ABCDABCDABDE
-              |
-              ABCDABD
-    ```
+```text
+BBC ABCDAB ABCDABCDABDE
+            |
+            ABCDABD
+```
 
 因为空格与`A`不匹配，继续后移一位。逐位比较，直到发现C与D不匹配。于是，`移动位数 = 6 - 2`，继续将搜索词向后移动4位。
 
-    ```text
-    BBC ABCDAB ABCDABCDABDE
-                     |
-               ABCDABD
-    ```
+```text
+BBC ABCDAB ABCDABCDABDE
+                    |
+            ABCDABD
+```
 
 逐位比较，直到搜索词的最后一位，发现完全匹配，于是搜索完成。如果还要继续搜索（即找出全部匹配），`移动位数 = 7 - 0`，再将搜索词向后移动7位，这里就不再重复了。
 
