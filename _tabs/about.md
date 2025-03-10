@@ -19,7 +19,7 @@ order: 4
 ## 🎓 Academic Journey @ Tsinghua
 <div class="row">
   <div class="col-md-2">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Tsinghua_University_Logo.svg/1200px-Tsinghua_University_Logo.svg.png" class="img-fluid" alt="THU Logo" style="max-height: 80px">
+    <img src="https://en.wikipedia.org/wiki/Tsinghua_University#/media/File:Tsinghua_University_Logo.svg" class="img-fluid" alt="THU Logo" style="max-height: 80px">
   </div>
   <div class="col-md-10">
     <p class="fs-5">As a sophomore in Computer Science and Technology at <a href="https://www.tsinghua.edu.cn/" target="_blank" class="text-decoration-none">Tsinghua University</a>, I'm immersed in the crucible where theoretical knowledge meets cutting-edge innovation. My academic voyage focuses on:</p>
@@ -111,7 +111,6 @@ order: 4
 <div class="text-center mt-5 py-4 bg-dark text-light rounded-3">
   <h3 class="mb-3">🚨 Stay Curious</h3>
   <p class="mb-0">"The computer revolution hasn't started yet. Don't miss it." - Alan Kay</p>
-  <p>Explore my evolving projects ➡️ <a href="/projects" class="text-warning text-decoration-none">Code Gallery</a></p>
 </div>
 
 <style>
