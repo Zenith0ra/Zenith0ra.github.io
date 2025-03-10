@@ -104,7 +104,7 @@ $$
 
 ### 引理 L
 
-![LemmaL]({{ site.url }}/assets/img/data_structure_and_algorithm/sorting_lemmal.png)
+![LemmaL]({{ site.url }}/assets/img/2024-12-27-sorting-shell-sort/lemmal.png)
 
 ### 线性组合性质
 

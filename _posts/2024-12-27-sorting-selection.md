@@ -254,4 +254,4 @@ $$T(n) \leq (n-1)+\frac{2}{n} \times \sum_{k=n/2}^{n-1} 4k \leq (n-1)+3n < 4n$$
 - 第5步：O(n) // 划分子集L/E/G，并分别计数 —— 一趟扫描足矣
 - 第6步：T(3n/4) // 为什么...
 
-![complexity]({{ site.url }}/assets/img/data_structure_and_algorithm/sorting_complexity.png)
+![complexity]({{ site.url }}/assets/img/2024-12-27-sorting-selection/complexity.png)

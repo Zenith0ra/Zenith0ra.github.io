@@ -90,7 +90,7 @@ Rank Vector<T>::partition( Rank lo, Rank hi ) { // LUG版：基本形式
 
 不变性：`L = [0,lo)`；`U = (lo,hi)`；`G = [hi,n)`；`[lo] == [hi]`
 
-![lug]({{ site.url }}/assets/img/data_structure_and_algorithm/sorting_lug.png)
+![lug]({{ site.url }}/assets/img/2024-12-26-sorting-quick-sort/lug.png)
 
 ### 性能特征
 
@@ -257,7 +257,7 @@ quickSort的过程及结果可理解为：将所有元素逐个地转化为pivot
 
 $$T(n)=\sum_{j=1}^{n-1} \sum_{i=0}^{j-1} \operatorname{Pr}(i, j)=\sum_{j=1}^{n-1} \sum_{d=1}^{j} \frac{2}{d+1} \approx \sum_{j=1}^{n-1} 2 \cdot(\ln j-1) \leq 2 \cdot n \cdot \ln n$$
 
-![compare]({{ site.url }}/assets/img/data_structure_and_algorithm/sorting_compare.png)
+![compare]({{ site.url }}/assets/img/2024-12-26-sorting-quick-sort/compare.png)
 
 ## 快速划分：DUP版
 
@@ -352,4 +352,4 @@ Rank Vector<T>::partition(Rank lo, Rank hi)
 
 ### 实例
 
-![LGU]({{ site.url }}/assets/img/data_structure_and_algorithm/sorting_lgu.png)
+![LGU]({{ site.url }}/assets/img/2024-12-26-sorting-quick-sort/lgu.png)
