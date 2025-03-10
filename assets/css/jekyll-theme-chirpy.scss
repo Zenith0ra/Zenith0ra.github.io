@@ -9,18 +9,32 @@
 
 /* append your custom style below */
 
-.theme-card {
-  background-color: var(--card-bg);
-  color: var(--text-color);
-  transition: background-color 0.3s ease, color 0.3s ease;
+[data-mode="dark"] .contact-card,
+.dark .contact-card,
+html[data-theme="dark"] .contact-card {
+  background-color: var(--card-bg, #2d2d2d) !important;
+  border: 1px solid var(--card-border, rgba(255, 255, 255, 0.1)) !important;
+  color: var(--card-text, #f8f9fa) !important;
 }
 
-:root:not([data-mode=light]) .theme-card {
-  background-color: #f8f9fa;
-  border: 1px solid rgba(0, 0, 0, 0.125);
+/* 浅色模式下的卡片样式 */
+:root:not([data-mode="dark"]) .contact-card,
+body:not(.dark) .contact-card,
+html:not([data-theme="dark"]) .contact-card {
+  background-color: var(--card-bg, #ffffff) !important;
+  border: 1px solid var(--card-border, rgba(0, 0, 0, 0.125)) !important;
+  color: var(--card-text, #212529) !important;
 }
 
-:root[data-mode=dark] .theme-card {
-  background-color: #2d2d2d;
-  border: 1px solid rgba(255, 255, 255, 0.125);
+/* 确保卡片内链接颜色适应主题 */
+[data-mode="dark"] .contact-card a,
+.dark .contact-card a,
+html[data-theme="dark"] .contact-card a {
+  color: var(--link-color, #58a6ff) !important;
+}
+
+:root:not([data-mode="dark"]) .contact-card a,
+body:not(.dark) .contact-card a,
+html:not([data-theme="dark"]) .contact-card a {
+  color: var(--link-color, #0366d6) !important;
 }
