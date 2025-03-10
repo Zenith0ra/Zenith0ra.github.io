@@ -12,7 +12,7 @@
 [data-mode="dark"] .contact-card,
 .dark .contact-card,
 html[data-theme="dark"] .contact-card {
-  background-color: var(--card-bg, #888888) !important;
+  background-color: var(--card-bg, #2d2d2d) !important;
   border: 1px solid var(--card-border, rgba(255, 255, 255, 0.1)) !important;
   color: var(--card-text, #f8f9fa) !important;
 }
@@ -23,7 +23,7 @@ body:not(.dark) .contact-card,
 html:not([data-theme="dark"]) .contact-card {
   background-color: var(--card-bg, #ffffff) !important;
   border: 1px solid var(--card-border, rgba(0, 0, 0, 0.125)) !important;
-  color: var(--card-text, #212529) !important;
+  color: var(--card-text, #888888) !important;
 }
 
 /* 确保卡片内链接颜色适应主题 */
