@@ -8,3 +8,19 @@
 ';
 
 /* append your custom style below */
+
+.theme-card {
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+:root:not([data-mode=dark]) .theme-card {
+  background-color: #f8f9fa;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+:root[data-mode=dark] .theme-card {
+  background-color: #2d2d2d;
+  border: 1px solid rgba(255, 255, 255, 0.125);
+}
