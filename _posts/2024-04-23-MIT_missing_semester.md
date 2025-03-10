@@ -17,13 +17,13 @@ In this blog, I’ll share my detailed notes from the MIT Missing Semester cours
 
 ### Notes for the MIT Missing Semester
 
-- [1. Course overview + the shell]({{ site.url }}/posts/1. Course overview + the shell)
-- [2. Shell Tools and Scripting]({{ site.url }}/posts/2. Shell Tools and Scripting)
-- [3. Editors(Vim)]({{ site.url }}/posts/3. Editors (Vim))
-- [4. Data Wrangling]({{ site.url }}/posts/4. Data Wrangling)
-- [5. Command-line Environment]({{ site.url }}/posts/5. Command-line Environment)
-- [6. Version Control (Git)]({{ site.url }}/posts/6. Version Control (Git))
-- [7. Debugging and Profiling]({{ site.url }}/posts/7. Debugging and Profiling)
-- [8. Metaprogramming]({{ site.url }}/posts/8. Metaprogramming)
-- [9. Security and Cryptography]({{ site.url }}/posts/9. Security and Cryptography)
-- [10. Potpourri]({{ site.url }}/posts/10. Potpourri)
+- [1. Course overview + the shell]({{ site.url }}/posts/01.-Course-overview-+-the-shell)
+- [2. Shell Tools and Scripting]({{ site.url }}/posts/02.-Shell-Tools-and-Scripting)
+- [3. Editors(Vim)]({{ site.url }}/posts/03.-Editors-(Vim))
+- [4. Data Wrangling]({{ site.url }}/posts/04.-Data-Wrangling)
+- [5. Command-line Environment]({{ site.url }}/posts/05.-Command-line-Environment)
+- [6. Version Control (Git)]({{ site.url }}/posts/06.-Version-Control-(Git))
+- [7. Debugging and Profiling]({{ site.url }}/posts/07.-Debugging-and-Profiling)
+- [8. Metaprogramming]({{ site.url }}/posts/08.-Metaprogramming)
+- [9. Security and Cryptography]({{ site.url }}/posts/09.-Security-and-Cryptography)
+- [10. Potpourri]({{ site.url }}/posts/10.-Potpourri)
