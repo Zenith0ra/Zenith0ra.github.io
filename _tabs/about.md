@@ -4,11 +4,14 @@ icon: fas fa-info-circle
 order: 4
 ---
 
+> "Computer science is no more about computers than astronomy is about telescopes."
+>
+> By Edsger W. Dijkstra
+
 # Linzhi Hou (侯林之)
 
 Architecting the intersection of computational innovation and creative problem-solving
-
-> "Computer science is no more about computers than astronomy is about telescopes." - Edsger W. Dijkstra
+{: .prompt-info }
 
 # Professional Odyssey
 

@@ -15,7 +15,7 @@
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-:root:not([data-mode=dark]) .theme-card {
+:root:not([data-mode=light]) .theme-card {
   background-color: #f8f9fa;
   border: 1px solid rgba(0, 0, 0, 0.125);
 }
