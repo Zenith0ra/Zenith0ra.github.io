@@ -10,7 +10,7 @@ order: 4
 
 # Linzhi Hou (侯林之)
 
-Architecting the intersection of computational innovation and creative problem-solving
+> Architecting the intersection of computational innovation and creative problem-solving
 {: .prompt-info }
 
 # Professional Odyssey
