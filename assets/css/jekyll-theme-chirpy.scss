@@ -38,3 +38,35 @@ body:not(.dark) .contact-card a,
 html:not([data-theme="dark"]) .contact-card a {
   color: var(--link-color, #0366d6) !important;
 }
+
+/* 响应式副标题样式 */
+.subtitle-container {
+  padding: 1rem;
+  margin: 1.5rem 0;
+  border-left: 4px solid var(--link-color, #0366d6);
+  background-color: var(--sidebar-bg, rgba(42, 42, 42, 0.1));
+  border-radius: 0.25rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.subtitle-text {
+  margin: 0;
+  padding: 0;
+  font-size: 1.25rem;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--text-color, currentColor);
+  line-height: 1.6;
+}
+
+/* 微妙的悬停效果 */
+.subtitle-container:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* 确保在深色模式下有适当的阴影 */
+[data-mode="dark"] .subtitle-container:hover {
+  box-shadow: 0 4px 8px rgba(255,255,255,0.05);
+}
