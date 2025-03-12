@@ -1,4 +1,11 @@
-## 实验一 示波器实验
+---
+title: 数字逻辑实验一 示波器实验 预习报告
+description: 数字逻辑实验一示波器实验的预习报告
+categories: [Education and Guides, Coursework]
+tags: [digital-logic, experiment, oscilloscope]
+---
+
+# 实验一 示波器实验
 
 ## 实验目的
 
@@ -47,37 +54,36 @@
     
     +   使用探头 1 或 2 连接信号发生器的输出或者时钟模块的 1M 输出
     
-    - 内置信号发生器连接
-    
-    ![](https://lab.cs.tsinghua.edu.cn/digital-logic-lab/doc/lab1/figure/wavegen_connect.png)
+        - 内置信号发生器连接
+        
+        ![](https://lab.cs.tsinghua.edu.cn/digital-logic-lab/doc/lab1/figure/wavegen_connect.png)
 
-    - 时钟模块连接
-    
-    ![](https://lab.cs.tsinghua.edu.cn/digital-logic-lab/doc/lab1/figure/module_wave_connect.png)
-    
-    > 为了让模块与示波器共地，可以增加一个带有 `GND` 插线孔的 IC14 模块，将探头的黑色夹子连接到这个插线孔，探头钩子连接到时钟模块的 `1M` 插线孔。
-    {: .prompt-tip }
+        - 时钟模块连接
+        
+        ![](https://lab.cs.tsinghua.edu.cn/digital-logic-lab/doc/lab1/figure/module_wave_connect.png)
+        
+        > 为了让模块与示波器共地，可以增加一个带有 `GND` 插线孔的 IC14 模块，将探头的黑色夹子连接到这个插线孔，探头钩子连接到时钟模块的 `1M` 插线孔。
+        {: .prompt-tip }
     
     +   使用示波器内置信号发生器时，按下示波器的 `Wave Gen` 按键，根据屏幕下面的软键进行设置生成需要的波形
     
-    - 内置信号发生器 100kHz 正弦波
-    
-    ![](https://lab.cs.tsinghua.edu.cn/digital-logic-lab/doc/lab1/figure/100k_wave_set.png)
-    
-    - 内置信号发生器 1MHz TTL方波
+        - 内置信号发生器 100kHz 正弦波
+        
+        ![](https://lab.cs.tsinghua.edu.cn/digital-logic-lab/doc/lab1/figure/100k_wave_set.png)
+        
+        - 内置信号发生器 1MHz TTL方波
 
-    ![](https://lab.cs.tsinghua.edu.cn/digital-logic-lab/doc/lab1/figure/1M_wave_set.png)
-    
-    > TTL方波默认就是指0-5V的方波，可以通过设置 `幅度` `偏移` 来控制，还可以通过以下方式设置。
-    >
-    > ![](https://lab.cs.tsinghua.edu.cn/digital-logic-lab/doc/lab1/figure/1M_wave_set_tip.png)
-    >
-    > 这时信号发生器产生的信号就时0-5V的方波了。
-    {: .prompt-tip }
+        ![](https://lab.cs.tsinghua.edu.cn/digital-logic-lab/doc/lab1/figure/1M_wave_set.png)
+        
+        > TTL方波默认就是指0-5V的方波，可以通过设置 `幅度` `偏移` 来控制，还可以通过以下方式设置。
+        > 这时信号发生器产生的信号就时0-5V的方波了。
+        {: .prompt-tip }
 
-    - 内置信号发生器 100Hz 0-5V的三角波
-    
-    ![](https://lab.cs.tsinghua.edu.cn/digital-logic-lab/doc/lab1/figure/100_wave_set1.png)
+        ![](https://lab.cs.tsinghua.edu.cn/digital-logic-lab/doc/lab1/figure/1M_wave_set_tip.png)
+
+        - 内置信号发生器 100Hz 0-5V的三角波
+        
+        ![](https://lab.cs.tsinghua.edu.cn/digital-logic-lab/doc/lab1/figure/100_wave_set1.png)
     
     +   按下示波器的 `Auto Scale` 按键自动调整显示，就可以看到稳定的输出信号波形。
 
