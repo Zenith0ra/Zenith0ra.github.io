@@ -1,5 +1,5 @@
 ---
-title: 数字逻辑实验一 示波器实验 预习报告
+title: 数字逻辑实验一 示波器实验
 description: 数字逻辑实验一示波器实验的预习报告
 categories: [Education and Guides, Coursework]
 tags: [digital-logic, experiment, oscilloscope]
@@ -22,19 +22,19 @@ tags: [digital-logic, experiment, oscilloscope]
 
 1.  使用内置信号发生器生成 100kHz 正弦波，占空比为 50％，直流电平为零，峰峰值 4V
     
-    ![](https://lab.cs.tsinghua.edu.cn/digital-logic-lab/doc/lab1/figure/100k_wave.png)
+    ![]({{ site.url }}/assets/img/2025-03-12-oscilloscope-lab-preparation/100k_wave.png)
     
 2.  使用内置信号发生器生成 1MHz TTL 方波，占空比为 50%
     
-    ![](https://lab.cs.tsinghua.edu.cn/digital-logic-lab/doc/lab1/figure/1M_wave.png)
+    ![]({{ site.url }}/assets/img/2025-03-12-oscilloscope-lab-preparation/1M_wave.png)
     
 3.  使用内置信号发生器生成 100Hz，0-5V 的三角波，占空比为 50%
     
-    ![](https://lab.cs.tsinghua.edu.cn/digital-logic-lab/doc/lab1/figure/100_wave.png)
+    ![]({{ site.url }}/assets/img/2025-03-12-oscilloscope-lab-preparation/100_wave.png)
     
 4.  使用时钟模块生成测量实验模块 1MHz 输出
     
-    ![](https://lab.cs.tsinghua.edu.cn/digital-logic-lab/doc/lab1/figure/module_wave.png)
+    ![]({{ site.url }}/assets/img/2025-03-12-oscilloscope-lab-preparation/module_wave.png)
     
 
 ## 实验步骤
@@ -43,11 +43,11 @@ tags: [digital-logic, experiment, oscilloscope]
     
     +   打开示波器电源，将示波器探头连接到 `Demo 2` 端子上，并将探头的黑色夹子与示波器中间的接地端子连接，完成校准电路的搭建
     
-    ![](https://lab.cs.tsinghua.edu.cn/digital-logic-lab/doc/lab1/figure/Probe_Connect.png)
+    ![]({{ site.url }}/assets/img/2025-03-12-oscilloscope-lab-preparation/Probe_Connect.png)
     
     +   按下 `Auto Scale` 键查看产生的波形，按下探头所连接的通道键`1` 和 `2`，然后按下屏幕下方`探头`下方的软键，查看屏幕下方`探头`处标识的衰减倍率是否与实际探头的衰减倍率一致；或者`Auto Scale` 后直接查看屏幕右侧的`通道`栏中的两个通道的倍率是否与实际探头的衰减倍率一致。
     
-    ![](https://lab.cs.tsinghua.edu.cn/digital-logic-lab/doc/lab1/figure/calibrate.png)
+    ![]({{ site.url }}/assets/img/2025-03-12-oscilloscope-lab-preparation/calibrate.png)
     
     +   在通道探头菜单中，按下 `无源探头检查` 下方的软键后选择 `OK` 进行检查。若为欠补偿 / 过补偿，请首先检查倍率是否匹配以及电路连接是否稳定，并重新进行探头检查。若仍无法通过测试，举手向在场助教或老师反馈情况，并使用专用工具调整探头上的微调电容进行探头校准。
 2.  生成对应波形
@@ -56,11 +56,11 @@ tags: [digital-logic, experiment, oscilloscope]
     
         - 内置信号发生器连接
         
-        ![](https://lab.cs.tsinghua.edu.cn/digital-logic-lab/doc/lab1/figure/wavegen_connect.png)
+        ![]({{ site.url }}/assets/img/2025-03-12-oscilloscope-lab-preparation/wavegen_connect.png)
 
         - 时钟模块连接
         
-        ![](https://lab.cs.tsinghua.edu.cn/digital-logic-lab/doc/lab1/figure/module_wave_connect.png)
+        ![]({{ site.url }}/assets/img/2025-03-12-oscilloscope-lab-preparation/module_wave_connect.png)
         
         > 为了让模块与示波器共地，可以增加一个带有 `GND` 插线孔的 IC14 模块，将探头的黑色夹子连接到这个插线孔，探头钩子连接到时钟模块的 `1M` 插线孔。
         {: .prompt-tip }
@@ -69,21 +69,21 @@ tags: [digital-logic, experiment, oscilloscope]
     
         - 内置信号发生器 100kHz 正弦波
         
-        ![](https://lab.cs.tsinghua.edu.cn/digital-logic-lab/doc/lab1/figure/100k_wave_set.png)
+        ![]({{ site.url }}/assets/img/2025-03-12-oscilloscope-lab-preparation/100k_wave_set.png)
         
         - 内置信号发生器 1MHz TTL方波
 
-        ![](https://lab.cs.tsinghua.edu.cn/digital-logic-lab/doc/lab1/figure/1M_wave_set.png)
+        ![]({{ site.url }}/assets/img/2025-03-12-oscilloscope-lab-preparation/1M_wave_set.png)
         
         > TTL方波默认就是指0-5V的方波，可以通过设置 `幅度` `偏移` 来控制，还可以通过以下方式设置。
         > 这时信号发生器产生的信号就时0-5V的方波了。
         {: .prompt-tip }
 
-        ![](https://lab.cs.tsinghua.edu.cn/digital-logic-lab/doc/lab1/figure/1M_wave_set_tip.png)
+        ![]({{ site.url }}/assets/img/2025-03-12-oscilloscope-lab-preparation/1M_wave_set_tip.png)
 
         - 内置信号发生器 100Hz 0-5V的三角波
         
-        ![](https://lab.cs.tsinghua.edu.cn/digital-logic-lab/doc/lab1/figure/100_wave_set1.png)
+        ![]({{ site.url }}/assets/img/2025-03-12-oscilloscope-lab-preparation/100_wave_set1.png)
     
     +   按下示波器的 `Auto Scale` 按键自动调整显示，就可以看到稳定的输出信号波形。
 
