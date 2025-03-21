@@ -83,8 +83,6 @@ description: "本文全面介绍神经网络与深度学习的基础概念、历
 - 加权求和：$z = \sum_{i=1}^{n} w_i x_i + b$
 - 激活函数($\sigma$)：决定神经元是否"激活"，输出为$a = \sigma(z)$
 
-![人工神经元模型](/assets/img/posts/neural_network/perceptron.png)
-
 #### 2.2.3 常见激活函数
 
 激活函数为神经网络引入非线性，使其能够学习复杂模式：
@@ -313,8 +311,6 @@ $$y^{(i)} = \gamma \hat{z}^{(i)} + \beta$$
 - 稀疏连接：每个输出只与一小部分输入相连
 - 能有效捕捉局部特征和空间关系
 
-![卷积操作](/assets/img/posts/neural_network/convolution.png)
-
 数学表示：$(I * K)(i, j) = \sum_m \sum_n I(i+m, j+n)K(m, n)$
 
 #### 4.1.2 池化层
@@ -452,8 +448,6 @@ $$\text{MultiHead}(Q, K, V) = \text{Concat}(\text{head}_1, ..., \text{head}_h)W^
 - 位置编码：提供序列位置信息
 - 前馈网络：对每个位置独立应用的全连接网络
 - 残差连接和层归一化：促进网络训练
-
-![Transformer架构](/assets/img/posts/neural_network/transformer.png)
 
 #### 4.3.4 BERT、GPT和大型语言模型
 
