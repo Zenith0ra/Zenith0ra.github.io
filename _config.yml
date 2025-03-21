@@ -16,7 +16,7 @@ timezone: Asia/Shanghai
 
 title: Zenith # the main title
 
-tagline: Technology Meets Creativity # it will display as the subtitle
+tagline: CST student at Tsinghua University # it will display as the subtitle
 
 description: >- # used by seo meta and the atom feed
   Welcome to the personal website of Linzhi Hou, a passionate Computer Science and Technology student at Tsinghua University. Explore a world where technology meets creativity, featuring insights on coding, artificial intelligence, open-source projects, and innovative solutions to real-world problems. Join me on a journey of learning, collaboration, and making a meaningful impact in the tech industry.
@@ -59,7 +59,7 @@ webmaster_verifications:
 # Web Analytics Settings
 analytics:
   google:
-    id: # fill in your Google Analytics ID
+    id: G-6HFVST8NR7 # fill in your Google Analytics ID
   goatcounter:
     id: # fill in your GoatCounter ID
   umami:
