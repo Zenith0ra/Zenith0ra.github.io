@@ -6,422 +6,395 @@ math: true
 description: "本文详细介绍辐射度量学与双向反射分布函数(BRDF)的基础概念、数学模型和应用，探讨如何从物理角度准确描述和模拟材质表面对光的反射特性。"
 ---
 
-## 1. 引言
+## 引言
 
-在计算机图形学中，如何真实地绘制渲染（从模型生成图像的过程）以及如何形式化描述物体表面的材质属性，是实现真实感图像的关键挑战。本文将介绍双向反射分布函数（BRDF）——一个关于光线如何被物体表面反射的物理描述模型。
+我们周围的大千世界充满了各种各样、具有不同外观特性的物质和材料。在计算机图形学中，一个核心的挑战是如何真实地模拟这些物体与光的交互，从而在屏幕上“绘制”或“渲染”（即从模型生成图像的过程）出逼真的图像。这引出了一个关键问题：我们如何形式化地描述光线照射到物体表面时的行为？特别是，光线是如何被表面反射的？
 
->BRDF相较于Phong等经验光照模型，更加符合物理规律，能够模拟更丰富多样的材质效果，是现代真实感渲染的基础。
-{:.prompt-info}
+本文的主题正是为了回答这个问题，我们将深入探讨**双向反射分布函数（Bidirectional Reflectance Distribution Function, BRDF）**。BRDF 提供了一个基于物理的框架，用于描述光线如何从任意入射方向被物体表面反射到任意出射方向，它是现代真实感渲染技术的基石。
 
-## 2. 从Phong模型到BRDF
+## 回忆：Phong 光照模型及其局限性
 
-### 2.1 Phong模型回顾
+在深入 BRDF 之前，让我们简要回顾一下之前讨论过的 Phong 光照模型。Phong 模型是一种经典的经验模型，它将物体表面的光照分解为三个主要部分：
 
-Phong光照模型将物体的着色拆解为三个部分：
-- 环境光（Ambient Light）
-- 漫反射光（Diffuse Light）
-- 镜面反射光（Specular Light）
+1.  **环境光 (Ambient Light)**：模拟间接光照，提供基础亮度。
+2.  **漫反射光 (Diffuse Light)**：模拟光线照射到粗糙表面后向各个方向均匀散射的效果，其强度遵循兰伯特余弦定律。
+3.  **镜面反射光 (Specular Light)**：模拟光线照射到光滑表面后在特定方向（反射方向）产生的镜面高光。
 
-表达式为：
+通过将这三者叠加 (`环境光 + 漫反射光 + 镜面反射光 = 最终颜色`)，Phong 模型能够生成具有一定真实感的图像，特别是在表现光滑物体的高光方面。
 
-$$I = k_a I_a + k_d I_d (\vec{N} \cdot \vec{L}) + k_s I_s (\vec{R} \cdot \vec{V})^n$$
+然而，Phong 模型存在一些固有的缺点。首先，它是一个**经验模型**，其公式主要基于观察和直觉，并非严格基于物理定律，因此其模拟结果有时会偏离真实世界的光照现象。其次，它通常只适用于处理**点光源和方向光源**，对于更复杂的区域光源或环境光照处理能力有限。
 
-其中：
-- $k_a$, $k_d$, $k_s$ 分别是环境光、漫反射和镜面反射的系数
-- $I_a$, $I_d$, $I_s$ 分别是环境光、漫反射和镜面反射的光强
-- $\vec{N}$ 是表面法向量
-- $\vec{L}$ 是指向光源的单位向量
-- $\vec{R}$ 是反射向量
-- $\vec{V}$ 是视线向量
-- $n$ 是高光系数，控制镜面反射的锐度
+为了追求更高的真实感和物理准确性，我们需要引入更严谨的理论基础。这便是**辐射度量学（Radiometry）**发挥作用的地方。基于辐射度量学，我们可以定义 BRDF，从而更精确地描述光的反射行为。
 
-### 2.2 Phong模型的局限性
+## 本节课内容概览：BRDF 材质
 
-Phong模型存在以下缺点：
-- 作为经验模型，并不完全符合物理规律
-- 仅支持点光源和方向光源
-- 难以表现复杂材质的光学特性
-- 不遵循能量守恒定律
-- 双向反射特性不够准确
+本文将围绕 BRDF 展开，主要内容包括：
 
-要更加贴合物理现实，我们需要：
-- 引入物理学中的辐射度量学
-- 使用BRDF来描述光的反射行为
+1.  **预备知识**：辐射度量学（Radiometry）的基本概念。
+2.  **BRDF 简述**：定义、核心性质以及与渲染方程的关系。
+3.  **BRDF 模型**：介绍几种常见的 BRDF 模型（经验模型、物理模型、数据驱动模型）。
+4.  **BRDF 的度量与评价**：如何获取和评估真实材质的 BRDF 数据。
+5.  **进阶话题**：超越 BRDF 的次表面散射（Subsurface Scattering）与 BSSRDF。
 
-## 3. 辐射度量学基础
+## 预备知识：辐射度量学（Radiometry）
 
-### 3.1 球面坐标系统
+辐射度量学是研究电磁辐射（包括可见光）能量度量的物理学分支。理解其基本概念对于掌握 BRDF至关重要。
 
-光线主要通过方向来描述，通常使用球面坐标表达比笛卡尔坐标更为便捷。
+### 球面坐标 (Spherical Coordinate)
 
-球面坐标系中的方向向量由三个分量指定：
-- $r$ 表示向量的长度
-- $\theta$ 表示向量和z轴正方向的夹角
-- $\phi$ 表示向量在x-y平面上的投影和x轴正方向的夹角
+在图形学中，光线的方向至关重要。相比笛卡尔坐标 `(x, y, z)`，使用球面坐标 `(r, θ, ϕ)` 描述方向通常更为方便。
 
-笛卡尔坐标$(x,y,z)$与球坐标$(r,\theta,\phi)$的转换关系：
+*   `r`：向量的长度（到原点的距离）。
+*   `θ`：**极角 (Polar Angle)**，向量与 `z` 轴正方向的夹角（通常范围 `[0, π]`）。
+*   `ϕ`：**方位角 (Azimuthal Angle)**，向量在 `x-y` 平面上的投影与 `x` 轴正方向的夹角（通常范围 `[0, 2π)`）。
 
-$$
-\begin{cases}
-r = \sqrt{x^2 + y^2 + z^2} \\
-\theta = \arccos(z/r) \\
-\phi = \arctan(y/x)
-\end{cases}
-$$
+三维笛卡尔坐标 `(x, y, z)` 和球面坐标 `(r, θ, ϕ)` 的转换关系如下：
 
-反之：
+*   从笛卡尔到球面：
+    *   $r = \sqrt{x^2 + y^2 + z^2}$
+    *   $\theta = \operatorname{acos}(z/r)$
+    *   $\phi = \operatorname{atan}(y/x)$
+*   从球面到笛卡尔：
+    *   $x = r \sin(\theta) \cos(\phi)$
+    *   $y = r \sin(\theta) \sin(\phi)$
+    *   $z = r \cos(\theta)$
 
-$$
-\begin{cases}
-x = r\sin\theta\cos\phi \\
-y = r\sin\theta\sin\phi \\
-z = r\cos\theta
-\end{cases}
-$$
+### 立体角 (Solid Angle)
 
-### 3.2 立体角
+立体角是平面角（弧度）在三维空间中的推广，用于衡量一个观察点对一个区域所张的“视野大小”。它定义为以观察点为球心，半径为 `r` 的球面上，该区域所投影的面积 `A` 与半径平方 `r²` 之比。
 
-立体角描述了一个圆锥体在以其顶点为球心、半径为1的球面上所张成的视野大小，是平面角在三维空间的自然推广。
+*   立体角的符号通常是 `ω` (omega)，单位为球面度 (steradian, sr)。
+*   其微分形式为：
+    $$ d\omega = \frac{dA}{r^2} $$
+*   在球面坐标系下，球面上的一个无穷小面积微元 `dA` 可以表示为 $dA = (r d\theta)(r \sin\theta d\phi) = r^2 \sin\theta d\theta d\phi$。因此，立体角的微分形式也可以写为：
+    $$ d\omega = \sin\theta d\theta d\phi $$
+*   整个球面的立体角为 `4π` 球面度。一个半球面的立体角为 `2π` 球面度。
 
-立体角的单位是球面度（steradian，简写为sr），最大值为全角$4\pi$，该最大值可以在区域为整个球面时取到。
+### 投影面积 (Foreshortened Area)
 
-立体角$\omega$的微分形式：
+当一个表面微元 `dA` 被从某个方向观察时，其可见的有效面积会因观察角度而改变。如果观察方向与表面法向量 `n` 的夹角为 `θ`，则该表面微元在该观察方向上的**投影面积**为：
+$$ dA_{\perp} = dA \cos\theta $$
+这个概念在计算光通量时非常重要，因为只有垂直于光线传播方向的面积才决定了能量的密度。
 
-$$d\omega = \frac{dA}{r^2}$$
+### 光能 (Radiant Energy)
 
-在球面坐标系下：
+光能 $Q$ 是指电磁辐射能量的总和，可以理解为一定区域或时间内光子能量的总量。其单位是焦耳 (Joule, J)。
 
-$$d\omega = \sin\theta d\theta d\phi$$
+### 光通量 (Radiant Flux)
 
-### 3.3 投影面积
+光能是不断运动的。**光通量** $Φ$ (Phi) 描述的是单位时间内穿过某个截面或由某个光源发出的光能。它是功率的一种形式。
+$$ \Phi = \frac{dQ}{dt} $$
+光通量的单位是瓦特 (Watt, W)。
 
-投影面积描述了物体表面相对于某个视线方向下的可见面积。对于面积微元$dA$，其沿着与法向夹角为$\theta$方向的可见面积为：
+### 发光强度 (Intensity)
 
-$$dA_{\text{projected}} = dA\cos\theta$$
+**发光强度** $I$ 描述一个点光源（或一个微小光源）在特定方向上单位立体角内发出的光通量。
+$$ I = \frac{d\Phi}{d\omega} $$
+发光强度的单位是瓦特每球面度 (W/sr)。
 
-这一概念对于理解光的传播和辐射强度至关重要，被称为Lambert余弦定律。
+### 光亮度 (Radiance)
 
-### 3.4 辐射量与单位
+**光亮度** $L$ 是辐射度量学中极其重要的一个概念，尤其在渲染中。它描述了**沿某一方向传播的光线的“亮度”**。具体来说，它定义为单位投影面积 ($dA_{\perp} = dA \cos\theta$)、单位立体角 ($d\omega$) 上的光通量 $Φ$。
+$$ L = \frac{d^2\Phi}{dA \cos\theta \, d\omega} $$
+其中，`θ` 是光线方向与表面法线的夹角。光亮度的单位是瓦特每平方米每球面度 (W/(m²·sr))。
 
-辐射度量学定义了一系列精确描述光能传播的物理量：
+Radiance 可以看作是描述渲染中“一条光线”携带能量的基本物理量。它有一个重要的性质：在真空中（或均匀介质中）沿直线传播时，其值保持不变（不考虑能量损失）。这使得它成为光线追踪等算法的核心。
 
-1. **辐射能(Radiant Energy)**
-   - 符号：$Q$
-   - 单位：焦耳(J)
-   - 定义：电磁辐射携带的能量总量
+Radiance 也可以看作是单位投影面积上的发光强度：
+$$ L = \frac{dI}{dA \cos\theta} $$
+其中 $dI = d\Phi / d\omega$ 是该面元在特定方向上的发光强度。
 
-2. **辐射通量/功率(Radiant Flux/Power)**
-   - 符号：$\Phi$
-   - 单位：瓦特(W = J/s)
-   - 定义：单位时间内通过表面的辐射能，$\Phi = \frac{dQ}{dt}$
+### 辉度 (Irradiance)
 
-3. **辐照度(Irradiance)**
-   - 符号：$E$
-   - 单位：瓦特/平方米(W/m²)
-   - 定义：单位表面积接收的辐射通量，$E = \frac{d\Phi}{dA}$
+**辉度** $E$ 描述的是到达物体表面单位面积上的总光通量（来自所有方向的入射光）。
+$$ E = \frac{d\Phi}{dA} $$
+辉度的单位是瓦特每平方米 (W/m²)。它衡量的是物体表面受到的光照强度。
 
-4. **辐射强度(Radiant Intensity)**
-   - 符号：$I$
-   - 单位：瓦特/球面度(W/sr)
-   - 定义：单位立体角内的辐射通量，$I = \frac{d\Phi}{d\omega}$
+### 辉度与光亮度的关系
 
-5. **辐亮度(Radiance)**
-   - 符号：$L$
-   - 单位：瓦特/球面度/平方米(W/sr/m²)
-   - 定义：单位投影面积、单位立体角内的辐射通量，$L = \frac{d^2\Phi}{d\omega dA\cos\theta}$
+物体表面某一点的辉度 $E$ 是所有入射到该点的光线的光亮度 $L_i(ω_i)$ 在该点产生的贡献的总和。这些入射光线来自覆盖该点的整个半球 `Ω`。每条入射光线的贡献需要考虑其方向与表面法线的夹角 `θ_i`（即 `cos(θ_i)` 因子，因为辉度是按实际面积计算，而光亮度是按投影面积定义）。
 
-辐亮度是渲染方程中最核心的概念，它描述了特定方向上的光能密度。
+因此，辉度可以表示为入射光亮度在入射半球 `Ω` 上的积分：
+$$ E = \int_{\Omega} L_i(\omega_i) \cos\theta_i \, d\omega_i $$
+其中，$L_i(\omega_i)$ 是沿入射方向 $\omega_i$ 到达该点的光亮度，$\theta_i$ 是 $\omega_i$ 与表面法线的夹角。只有当 $\cos\theta_i > 0$ (即 $\theta_i < 90°$) 时，光线才会对表面的辉度产生贡献。
 
-```python
-# 计算球面上立体角的代码示例
-import numpy as np
+## BRDF 简述
 
-def solid_angle(theta_min, theta_max, phi_min, phi_max):
-    """计算球面上一个区域的立体角
-    
-    参数:
-    theta_min, theta_max: 极角的范围 (0到π)
-    phi_min, phi_max: 方位角的范围 (0到2π)
-    
-    返回值:
-    立体角（单位：球面度）
-    """
-    return (np.cos(theta_min) - np.cos(theta_max)) * (phi_max - phi_min)
+掌握了辐射度量学的基本概念后，我们现在可以正式定义和探讨 BRDF。
 
-# 计算漫反射表面的辐照度与辐亮度的关系
-def diffuse_irradiance_to_radiance(irradiance):
-    """计算完美漫反射表面的辐亮度
-    
-    对于完美漫反射表面，各个方向的辐亮度相同，且满足:
-    L = E / π
-    
-    参数:
-    irradiance: 表面接收的辐照度 (W/m²)
-    
-    返回值:
-    辐亮度 (W/sr/m²)
-    """
-    return irradiance / np.pi
-```
+### BRDF 的定义
 
->上述代码需要NumPy库支持
-{:.prompt-info}
+**双向反射分布函数 (BRDF)**，通常表示为 $f_r(\omega_i \rightarrow \omega_r)$ 或 $f_r(p, \omega_i, \omega_r)$（包含表面点 `p`），描述了光线从入射方向 $\omega_i$ 到达物体表面一点后，被反射到出射方向 $\omega_r$ 的比例和分布特性。
 
-## 4. BRDF定义与性质
+更精确地说，BRDF 定义为：**出射方向 $\omega_r$ 上的反射光亮度 $dL_r(\omega_r)$ 与来自入射方向 $\omega_i$ 的入射辉度 $dE_i(\omega_i)$ 之比**。
+$$ f_r(\omega_i \rightarrow \omega_r) = \frac{dL_r(\omega_r)}{dE_i(\omega_i)} $$
+由于 $dE_i(\omega_i) = L_i(\omega_i) \cos\theta_i d\omega_i$，其中 $L_i(\omega_i)$ 是入射光亮度，$\theta_i$ 是入射角，$d\omega_i$ 是入射方向的立体角微元，BRDF 也可以定义为出射光亮度与入射光亮度乘以 $\cos\theta_i d\omega_i$ 的比值：
+$$ f_r(\omega_i \rightarrow \omega_r) = \frac{dL_r(\omega_r)}{L_i(\omega_i) \cos\theta_i d\omega_i} $$
+BRDF 的单位是球面度的倒数 (sr⁻¹)。它是一个描述表面材质光学属性的四维函数（两个入射角 $(\theta_i, \phi_i)$ 和两个出射角 $(\theta_r, \phi_r)$）。
 
-### 4.1 BRDF数学定义
+简而言之，BRDF 告诉我们，对于给定的入射光线，有多少能量会以怎样的角度分布被反射出去。它是绝大多数图形学算法中用于描述光反射现象的基本模型。
 
-双向反射分布函数(Bidirectional Reflectance Distribution Function, BRDF)描述了入射光能量如何被表面反射到不同出射方向的比例。
+![BRDF-definition]({{ site.url }}/assets/img/2025-03-04-radiometry-and-brdf/BRDF-definition.png)
 
-BRDF的数学定义为：
+### BRDF 的性质
 
-$$f_r(\omega_i, \omega_o) = \frac{dL_o(\omega_o)}{dE_i(\omega_i)} = \frac{dL_o(\omega_o)}{L_i(\omega_i) \cos\theta_i d\omega_i}$$
+物理上有效的 BRDF 必须满足两个重要性质：
 
-其中：
-- $\omega_i$ 是入射光方向
-- $\omega_o$ 是出射光方向
-- $L_i$ 是入射辐亮度
-- $L_o$ 是出射辐亮度
-- $E_i$ 是入射辐照度
-- $\theta_i$ 是入射角（入射方向与法线的夹角）
+1.  **亥姆霍兹可逆性 (Helmholtz Reciprocity)**：
+    交换入射光方向 $\omega_i$ 和出射光方向 $\omega_r$，BRDF 的值保持不变。这源于物理上的光路可逆原理。
+    $$ f_r(\omega_i \rightarrow \omega_r) = f_r(\omega_r \rightarrow \omega_i) $$
+    值得注意的是，我们之前提到的 Phong 模型（在其标准形式下）并不满足这个性质。
 
-BRDF的单位是1/sr (1/球面度)。
+2.  **能量守恒 (Energy Conservation)**：
+    物体表面反射的总能量不能超过入射的总能量。这意味着，对于任意给定的入射方向 $\omega_i$，所有出射方向 $\omega_r$ 的反射光能量总和必须小于或等于入射光能量。
+    数学上，这表现为 BRDF 在整个出射半球 `Ω` 上的积分必须小于等于 1：
+    $$ \int_{\Omega} f_r(\omega_i \rightarrow \omega_r) \cos\theta_r \, d\omega_r \le 1 \quad \forall \omega_i $$
+    其中 $\theta_r$ 是出射角。如果等号成立，表示所有入射光都被反射（没有吸收或透射）。如果小于 1，则表示有部分能量被表面吸收或透射进入物体内部。
 
-### 4.2 BRDF的物理性质
+### 反射方程 (The Reflection Equation)
 
-物理上合理的BRDF必须满足以下性质：
+BRDF 的核心用途是计算给定表面点 `p` 在特定出射方向 $\omega_r$ 上的总反射光亮度 $L_r(p, \omega_r)$。这需要考虑所有可能的入射方向 $\omega_i$ 对该出射方向的贡献。根据 BRDF 的定义，来自特定入射方向 $\omega_i$ 的入射光 $L_i(p, \omega_i)$ 对出射方向 $\omega_r$ 的贡献是 $f_r(p, \omega_i \rightarrow \omega_r) L_i(p, \omega_i) \cos\theta_i d\omega_i$。
 
-1. **非负性**：$f_r(\omega_i, \omega_o) \geq 0$
-   - BRDF任何情况下都不能为负，否则会违反能量守恒
+将所有入射方向（覆盖整个半球 `Ω`）的贡献积分起来，就得到了**反射方程**:
+$$ L_r(p, \omega_r) = \int_{\Omega} f_r(p, \omega_i \rightarrow \omega_r) L_i(p, \omega_i) \cos\theta_i \, d\omega_i $$
+在渲染中，我们最终看到的像素颜色，本质上就是由场景中对应着色点（shading point）沿相机方向 $\omega_r$ 反射的光线的 Radiance $L_r$ 决定的。
 
-2. **亥姆霍兹互易性(Helmholtz Reciprocity)**：$f_r(\omega_i, \omega_o) = f_r(\omega_o, \omega_i)$
-   - 光路可逆性，交换入射和出射方向，BRDF值不变
+### 渲染方程 (The Rendering Equation)
 
-3. **能量守恒**：$\forall \omega_i, \int_{\Omega} f_r(\omega_i, \omega_o) \cos\theta_o d\omega_o \leq 1$
-   - 反射能量不能超过入射能量，等式成立时为完全无损反射
+反射方程描述了光线如何从表面反射。然而，物体本身也可能发光（例如灯泡或自发光材质）。为了完整描述表面一点沿特定方向出射的总光亮度 $L_o(p, \omega_o)$（这里用 `o` 代表 outgoing），我们需要在反射方程的基础上加上表面自身的发射项 $L_e(p, \omega_o)$（emitted radiance）。这就得到了著名的**渲染方程 (The Rendering Equation)**：
 
-4. **各向同性(可选)**：$f_r(\theta_i, \phi_i, \theta_o, \phi_o) = f_r(\theta_i, \theta_o, |\phi_i - \phi_o|)$
-   - 对于许多材质，BRDF只与入射和出射方向的相对方位角有关
+$$ L_o(p, \omega_o) = L_e(p, \omega_o) + \int_{\Omega} f_r(p, \omega_i \rightarrow \omega_o) L_i(p, \omega_i) \cos\theta_i \, d\omega_i $$
 
-### 4.3 常见BRDF模型
+这里需要注意，入射光亮度 $L_i(p, \omega_i)$ 本身可能来自于场景中其他物体的出射光亮度 $L_o(p', \omega_i')$，其中 `p'` 是从 `p` 点沿 $-\omega_i$ 方向看到的另一点。这意味着渲染方程是一个**无限递归**的方程，光线会在场景中不断弹射。
 
-#### 4.3.1 Lambert漫反射模型
+渲染的本质问题，实际上就是求解这个积分方程。直接求解通常非常困难，因此在实践中我们使用各种数值方法来近似求解，例如下一讲将要讨论的**光线追踪 (Ray Tracing)**，它本质上是使用蒙特卡洛方法来解这个积分方程。
 
-最简单的BRDF模型，完美漫反射表面在所有方向上均匀反射光线：
+> **渲染方程之父：Jim Kajiya**
+>
+> 渲染方程由 Jim Kajiya 在他 1986 年于 SIGGRAPH 发表的里程碑式论文 "The Rendering Equation" 中首次提出。这篇论文奠定了现代物理渲染的基础。Kajiya 在计算机图形学领域，尤其是在渲染和硬件设计方面做出了卓越贡献，并因此获得了著名的 Steven Anson Coons 奖。
+>
+> **小插曲：SIGGRAPH 审稿**
+>
+> 1993年，Jim Kajiya 担任 SIGGRAPH '93 的技术程序主席，他对审稿流程进行了重大改革，这些改革沿用至今。他还写了一篇幽默而深刻的文章 "How to get your SIGGRAPH Paper rejected."，至今仍被图形学研究者们津津乐道。这体现了社区对严谨性和创新性的追求。
 
-$$f_r(\omega_i, \omega_o) = \frac{\rho_d}{\pi}$$
+## BRDF 模型
 
-其中$\rho_d$是漫反射率（反照率），范围在[0,1]之间。
+直接使用四维的 BRDF 函数 $f_r(\omega_i, \omega_r)$ 进行计算可能非常复杂和耗时。为了方便和高效地在渲染中使用，研究者们提出了各种参数化的 **BRDF 模型**来近似真实材质的反射特性。这些模型大致可以分为三类：
 
-#### 4.3.2 Phong BRDF模型
+1.  **经验模型 (Empirical Models)**
+2.  **基于物理的模型 (Physical-based Models)**
+3.  **数据驱动的模型 (Data-driven Models)**
 
-将Phong光照模型转换为BRDF形式：
+### 经验模型 (Empirical Models)
 
-$$f_r(\omega_i, \omega_o) = \frac{k_d}{\pi} + k_s \frac{n+2}{2\pi} (\vec{R} \cdot \vec{V})^n$$
+经验模型主要基于对光照现象的观察和直觉，使用简洁的数学公式来快速估算反射效果。
 
-其中：
-- $k_d$ 是漫反射系数
-- $k_s$ 是镜面反射系数
-- $n$ 是高光系数
-- $\vec{R}$ 是反射向量
-- $\vec{V}$ 是视线向量
+*   **优点**：计算简单、速度快，易于实现，常用于实时渲染（如游戏）。
+*   **缺点**：通常不严格遵循物理定律（如能量守恒、可逆性），参数缺乏明确的物理意义，模拟效果可能不够真实，尤其对于复杂材质。
 
-#### 4.3.3 Blinn-Phong BRDF模型
+#### 经验模型 1：Lambertian (理想漫反射)
 
-Blinn-Phong模型是Phong模型的改进版本，计算更高效：
+Lambertian 模型是最简单的 BRDF 模型，它假设入射光线被表面均匀地反射到所有方向。
 
-$$f_r(\omega_i, \omega_o) = \frac{k_d}{\pi} + k_s \frac{n+8}{8\pi} (\vec{N} \cdot \vec{H})^n$$
+*   BRDF 是一个常数：$f_r(\omega_i \rightarrow \omega_r) = \frac{\rho_d}{\pi}$
+*   $\rho_d$ (rho_d) 是**漫反射率 (Diffuse Albedo)**，表示表面反射的总能量与入射总能量之比（对于纯 Lambertian 表面，$\rho = \pi \times (\rho_d / \pi) = \rho_d$)。$\rho_d$ 的取值范围是 `[0, 1]`。
+*   $1/\pi$ 的因子来自于能量守恒的归一化（常数 BRDF 在半球上的积分 `∫(ρ_d/π) cosθ dω = ρ_d`）。
+*   出射光亮度 $L_r$ 只与总的入射辉度 $E_i$ 有关：$L_r = \int_{\Omega} \frac{\rho_d}{\pi} L_i(\omega_i) \cos\theta_i d\omega_i = \frac{\rho_d}{\pi} E_i$。
 
-其中$\vec{H}$是半角向量，$\vec{H} = \frac{\vec{L} + \vec{V}}{|\vec{L} + \vec{V}|}$。
+Lambertian 模型能很好地模拟理想的粗糙无光泽表面，如粉笔、未上釉的陶瓷、粗糙的墙面等。但它无法表现任何镜面反射（高光）效果，因此对于金属、塑料等光滑材质的模拟效果不佳。由于其简洁性，它经常作为更复杂模型（如 Phong）的漫反射分量。
 
-#### 4.3.4 Cook-Torrance微表面模型
+#### Phong 模型
 
-更复杂但物理准确的模型，考虑了表面微观几何结构：
+Phong 模型在 Lambertian 模型的基础上增加了一个镜面反射项，用于模拟光滑表面的高光。
 
-$$f_r(\omega_i, \omega_o) = \frac{k_d}{\pi} + \frac{DFG}{4(\omega_i \cdot \vec{N})(\omega_o \cdot \vec{N})}$$
+*   Phong BRDF (注意：这与原始 Phong 光照方程略有不同，是将其概念转化为 BRDF 形式的一种常见表达)：
+    $$ f_r(l \rightarrow v) = \frac{\rho_d}{\pi} + \rho_s \frac{(\mathbf{r} \cdot \mathbf{v})^s}{\dots ?} $$
+    这里的 `l` 是入射光方向，`v` 是观察方向，`r` 是 `l` 关于表面法线 `n` 的理想镜面反射方向。$\rho_d$ 是漫反射系数，$\rho_s$ 是镜面反射系数。`s` 是**高光指数 (Shininess)**，控制高光的大小和锐利度（`s` 越大，高光越小越亮）。
+*   *注：将 Phong 光照直接转为满足 BRDF 定义（单位 sr⁻¹）和性质（可逆性、能量守恒）的形式比较复杂，且有多种变体。原始讲义中给出的形式 $f_r(l \rightarrow v) = \rho_d + \rho_s (\mathbf{r} \cdot \mathbf{v})^s$ 更像是光照方程的直接挪用，单位和归一化可能存在问题，并且 $\rho_d$ 通常应除以 $\pi$。但按讲义内容呈现如下：*
+    $$ f_r(l \rightarrow v) = \rho_d + \rho_s (\max(0, \mathbf{r} \cdot \mathbf{v}))^s $$
+    其中 $\mathbf{r} = 2(\mathbf{n} \cdot \mathbf{l})\mathbf{n} - \mathbf{l}$。
+*   **不可逆性**：标准的 Phong 模型不满足亥姆霍兹可逆性，即 $f_r(l \rightarrow v) \neq f_r(v \rightarrow l)$。
+*   **优点**：计算仍然相对简单，能够同时表现漫反射和镜面反射，效果比 Lambertian 好。
+*   **缺点**：物理不准确，缺乏能量守恒保证，参数物理意义不明确。
 
-其中：
-- $D$ 是法线分布函数(NDF)，描述微表面法线分布
-- $F$ 是菲涅尔项，描述光在不同角度的反射率变化
-- $G$ 是几何项，考虑微表面间的遮挡和阴影
+尽管有这些缺点，Phong 模型及其变种因其高效性，在实时渲染领域仍被广泛使用。
 
-常用的法线分布函数包括：
+#### Phong 模型的扩展
 
-1. **Beckmann分布**：
-   $$D_{Beckmann}(\vec{H}) = \frac{1}{\pi \alpha^2 \cos^4 \theta_h} \exp\left(-\frac{\tan^2 \theta_h}{\alpha^2}\right)$$
+*   **Blinn-Phong 模型**：为了计算优化，引入**半程向量 (Halfway Vector)** $\mathbf{h} = (\mathbf{l} + \mathbf{v}) / ||\mathbf{l} + \mathbf{v}||$。用 $\mathbf{n} \cdot \mathbf{h}$ 替代 Phong 模型中的 $\mathbf{r} \cdot \mathbf{v}$。
+    $$ f_r(l \rightarrow v) \approx \frac{\rho_d}{\pi} + \rho_s' (\max(0, \mathbf{n} \cdot \mathbf{h}))^{s'} $$
+    （同样，常数项和归一化因子可能有不同形式）。Blinn-Phong 在某些情况下（特别是当视线接近掠射角时）能更好地匹配实验数据，并且计算 `h` 通常比计算 `r` 更快。
+*   **快速 Phong 绘制 (Fast Phong Shading)**：利用泰勒展开或查找表等技术加速 $(\mathbf{r} \cdot \mathbf{v})^s$ 或 $(\mathbf{n} \cdot \mathbf{h})^{s'}$ 的指数计算。
+*   **可逆的 Phong 模型 (Modified Phong Model)**：为了满足可逆性，有研究者提出了修改版的 Phong 模型。讲义中提到的修改方式似乎是直接使用 $f_r(l \rightarrow v) = \rho_d + \rho_s (\mathbf{r} \cdot \mathbf{v})^s$ 并声称其满足可逆性 $f_r(l \rightarrow v) = f_r(v \rightarrow l)$。这需要对原始模型做更具体的调整或重新解释才能成立，例如确保 `r` 和 `v` 的对称性或采用不同的公式结构。标准的 Phong 或 Blinn-Phong 通常需要特定修改才能保证可逆性和能量守恒。
 
-2. **GGX分布**：
-   $$D_{GGX}(\vec{H}) = \frac{\alpha^2}{\pi((\vec{N} \cdot \vec{H})^2 (\alpha^2-1) + 1)^2}$$
+### 基于物理的模型 (Physical-Based Models, PBR)
 
-菲涅尔项通常使用Schlick近似：
-$$F_{Schlick}(\cos\theta) = F_0 + (1 - F_0)(1 - \cos\theta)^5$$
+与经验模型不同，物理模型尝试从**表面微观结构 (Microgeometry)** 和**光学原理 (Optics)** 出发，建立更精确的反射方程。
 
-其中$F_0$是垂直入射时的反射率。
+*   **核心思想**：大多数真实表面在微观尺度下都不是完美光滑的，而是由大量微小的**微平面 (Microfacets)** 组成。这些微平面的朝向（法线）存在一定的统计分布，这决定了表面的**粗糙度 (Roughness)**。
+*   **假设**：光线与这些微平面发生相互作用（通常假设为镜面反射或漫反射），并且需要考虑微平面间的遮挡和阴影效应。
+*   **关键组成部分**：
+    *   **微平面分布函数 (Microfacet Distribution Function, D)**：描述微平面法线方向的统计分布。常用的有 Beckmann, GGX (Trowbridge-Reitz) 等。该函数通常与表面粗糙度参数相关。
+    *   **菲涅尔项 (Fresnel Term, F)**：描述光线在两种不同折射率介质界面（如空气和物体表面）发生反射和折射的比例。这个比例取决于入射角、光的偏振态以及材质的折射率。对于非导体（电介质）和导体（金属），菲涅尔效应表现不同。在掠射角（grazing angles, 入射角接近 90°）时，几乎所有材质的反射率都会显著增加。
+        *   精确的菲涅尔公式比较复杂，涉及光的 S 和 P 偏振。在图形学中，常用 **Schlick 近似 (Schlick's Approximation)** 来简化计算：
+            $$ F(\theta_i) \approx F_0 + (1 - F_0)(1 - \cos\theta_i)^5 $$
+            其中 $F_0 = (\frac{n_1 - n_2}{n_1 + n_2})^2$ 是法向入射时的反射率（$n_1, n_2$ 是两种介质的折射率）。
+    *   **几何衰减项 (Geometric Attenuation Factor, G)**：描述由于微平面间的相互遮挡（masking, 从视线方向看）和阴影（shadowing, 从光源方向看）导致部分微平面无法贡献反射的效应。这个项取决于入射、出射方向以及表面粗糙度。
 
-## 5. 渲染方程与BRDF的应用
+#### Cook-Torrance 模型
 
-### 5.1 渲染方程
+Cook-Torrance 模型是图形学中最早也是最经典的基于微平面理论的物理 BRDF 模型之一。它结合了漫反射项（通常是 Lambertian）和基于微平面理论的镜面反射项。
 
-Kajiya在1986年提出的渲染方程是现代真实感渲染的基础：
+*   BRDF 结构：$f_r = k_d f_d + k_s f_s$，其中 $f_d$ 是漫反射部分（如 $\rho_d / \pi$），$f_s$ 是镜面反射部分。$k_d, k_s$ 是系数（可能与菲涅尔项相关，以保证能量守恒）。
+*   镜面反射项 $f_s$：
+    $$ f_s(\omega_i, \omega_o) = \frac{D(\mathbf{h}) F(\omega_i, \mathbf{h}) G(\omega_i, \omega_o, \mathbf{h})}{4 (\mathbf{n} \cdot \omega_i) (\mathbf{n} \cdot \omega_o)} $$
+    其中：
+    *   $\mathbf{h}$ 是半程向量。
+    *   $D(\mathbf{h})$ 是微平面法线分布函数（例如，使用 Beckmann 分布）。只有法线方向恰好是 `h` 的微平面才能将光从 $\omega_i$ 精确反射到 $\omega_o$。
+        *   Beckmann 分布示例： $D(\mathbf{h}) = \frac{1}{\pi \alpha^2 \cos^4\beta} \exp\left(-\frac{\tan^2\beta}{\alpha^2}\right)$，其中 $\alpha$ 是表面粗糙度参数，$\beta$ 是 `n` 和 `h` 的夹角。
+    *   $F(\omega_i, \mathbf{h})$ 是菲涅尔项，通常用入射光线 $\omega_i$ 与微平面法线 `h` 的夹角计算。
+    *   $G(\omega_i, \omega_o, \mathbf{h})$ 是几何衰减项，考虑 $\omega_i$ 和 $\omega_o$ 方向上的遮挡/阴影。一个常用的形式是 Smith G 函数，它结合了遮挡和阴影两部分。
+        *   讲义中给出的 G 定义：$G = \min\left(1, \frac{2(\mathbf{n} \cdot \mathbf{h})(\mathbf{n} \cdot \omega_o)}{\omega_o \cdot \mathbf{h}}, \frac{2(\mathbf{n} \cdot \mathbf{h})(\mathbf{n} \cdot \omega_i)}{\omega_o \cdot \mathbf{h}}\right)$ (*注：此处分母 `ω_o ⋅ h` 可能有误，通常 G 函数形式更复杂，依赖于 D 函数的选择*）。
+    *   分母中的 $4 (\mathbf{n} \cdot \omega_i) (\mathbf{n} \cdot \omega_o)$ 是校正因子，与坐标系变换和投影面积有关。
 
-$$L_o(p, \omega_o) = L_e(p, \omega_o) + \int_{\Omega} f_r(p, \omega_i, \omega_o) L_i(p, \omega_i) (\omega_i \cdot \vec{N}) d\omega_i$$
+Cook-Torrance 模型能够解释一些经验模型无法模拟的现象：
 
-其中：
-- $L_o$ 是点$p$沿$\omega_o$方向的出射辐亮度
-- $L_e$ 是点$p$自身发光的辐亮度
-- $f_r$ 是BRDF
-- $L_i$ 是点$p$接收到的来自$\omega_i$方向的入射辐亮度
-- $\Omega$ 是上半球空间
-
-渲染方程的物理含义是：出射辐亮度等于自发光辐亮度加上所有入射方向的光线经BRDF反射后的辐亮度总和。
-
-### 5.2 BRDF在渲染中的应用
-
-#### 5.2.1 基于物理的渲染(PBR)
-
-PBR是现代游戏和电影行业的主流渲染方法，它使用物理上准确的BRDF模型，通常将材质参数化为：
-- 漫反射率/基础色(Base Color)
-- 金属度(Metalness)
-- 粗糙度(Roughness)
-- 环境光遮蔽(Ambient Occlusion)
-- 法线贴图(Normal Map)
-
-```glsl
-// PBR渲染的GLSL片段着色器示例（简化版）
-uniform sampler2D albedoMap;
-uniform sampler2D normalMap;
-uniform sampler2D metallicMap;
-uniform sampler2D roughnessMap;
-uniform sampler2D aoMap;
-uniform samplerCube irradianceMap;
-uniform samplerCube prefilterMap;
-uniform sampler2D brdfLUT;
-
-const float PI = 3.14159265359;
-
-// 法线分布函数 (GGX/Trowbridge-Reitz)
-float DistributionGGX(vec3 N, vec3 H, float roughness) {
-    float a = roughness*roughness;
-    float a2 = a*a;
-    float NdotH = max(dot(N, H), 0.0);
-    float NdotH2 = NdotH*NdotH;
-
-    float nom   = a2;
-    float denom = (NdotH2 * (a2 - 1.0) + 1.0);
-    denom = PI * denom * denom;
-
-    return nom / denom;
-}
-
-// 几何遮蔽函数 (Smith's Schlick-GGX)
-float GeometrySchlickGGX(float NdotV, float roughness) {
-    float r = (roughness + 1.0);
-    float k = (r*r) / 8.0;
-
-    float nom   = NdotV;
-    float denom = NdotV * (1.0 - k) + k;
-
-    return nom / denom;
-}
-
-// 组合几何项
-float GeometrySmith(vec3 N, vec3 V, vec3 L, float roughness) {
-    float NdotV = max(dot(N, V), 0.0);
-    float NdotL = max(dot(N, L), 0.0);
-    float ggx2 = GeometrySchlickGGX(NdotV, roughness);
-    float ggx1 = GeometrySchlickGGX(NdotL, roughness);
-
-    return ggx1 * ggx2;
-}
-
-// 菲涅尔方程 (Schlick近似)
-vec3 fresnelSchlick(float cosTheta, vec3 F0) {
-    return F0 + (1.0 - F0) * pow(max(1.0 - cosTheta, 0.0), 5.0);
-}
-
-void main() {   
-    // 材质属性
-    vec3 albedo = texture(albedoMap, TexCoords).rgb;
-    float metallic = texture(metallicMap, TexCoords).r;
-    float roughness = texture(roughnessMap, TexCoords).r;
-    float ao = texture(aoMap, TexCoords).r;
-    
-    // 输入照明数据
-    vec3 N = getNormalFromMap();
-    vec3 V = normalize(camPos - WorldPos);
-    
-    // 计算反射率F0
-    vec3 F0 = vec3(0.04); 
-    F0 = mix(F0, albedo, metallic);
-    
-    // 直接光照贡献
-    vec3 Lo = vec3(0.0);
-    for(int i = 0; i < 4; ++i) {
-        vec3 L = normalize(lightPositions[i] - WorldPos);
-        vec3 H = normalize(V + L);
-        
-        // 计算辐射度
-        float distance = length(lightPositions[i] - WorldPos);
-        float attenuation = 1.0 / (distance * distance);
-        vec3 radiance = lightColors[i] * attenuation;
-        
-        // Cook-Torrance BRDF
-        float NDF = DistributionGGX(N, H, roughness);   
-        float G = GeometrySmith(N, V, L, roughness);    
-        vec3 F = fresnelSchlick(max(dot(H, V), 0.0), F0);
-           
-        vec3 nominator = NDF * G * F; 
-        float denominator = 4.0 * max(dot(N, V), 0.0) * max(dot(N, L), 0.0);
-        vec3 specular = nominator / max(denominator, 0.001);
-        
-        // 考虑能量守恒
-        vec3 kS = F;
-        vec3 kD = vec3(1.0) - kS;
-        kD *= 1.0 - metallic;
-        
-        float NdotL = max(dot(N, L), 0.0);        
-        Lo += (kD * albedo / PI + specular) * radiance * NdotL;
-    }
-    
-    // 环境光照贡献
-    vec3 ambient = calculateAmbientLighting(albedo, metallic, roughness, N, V);
-    
-    vec3 color = ambient + Lo;
-    
-    // HDR色调映射和伽马校正
-    color = color / (color + vec3(1.0));
-    color = pow(color, vec3(1.0/2.2)); 
-    
-    FragColor = vec4(color, 1.0);
-}
-```
-
->上述代码为GLSL片段着色器代码，需要在OpenGL/WebGL环境中使用
-{:.prompt-info}
-
-#### 5.2.2 BRDF的测量与捕获
-
-现实材质的BRDF非常复杂，通常通过专用设备进行测量：
-- 特制的机械臂和光源在不同角度捕获材质的反射特性
-- 测量数据通常以四维表格形式存储
-- Cornell University和Columbia University等机构提供了公开的BRDF数据库
-
-#### 5.2.3 重要性采样
-
-由于渲染方程中的积分难以解析求解，通常采用蒙特卡洛方法进行数值近似：
-
-$$\int_{\Omega} f(\omega) d\omega \approx \frac{1}{N} \sum_{i=1}^{N} \frac{f(\omega_i)}{p(\omega_i)}$$
-
-为了提高收敛速度，通常按照BRDF值的分布进行重要性采样，即生成的采样点$\omega_i$的概率密度函数$p(\omega_i)$与BRDF成正比。
-
-## 6. 总结与应用前景
-
-BRDF和辐射度量学为计算机图形学提供了描述光与物质相互作用的严格数学框架，是现代真实感渲染的理论基础。随着计算机硬件的不断进步，基于物理的渲染已从离线渲染领域扩展到实时渲染，在游戏、VR/AR、产品可视化等领域获得广泛应用。
-
-未来的发展方向包括：
-- 更高效的重要性采样技术
-- 复杂材质的多层BRDF模型
-- 结合机器学习的BRDF压缩与重建
-- 考虑次表面散射和波动光学效应的扩展模型
-
-通过对BRDF的深入理解和应用，我们能够创造出更加真实、更具视觉冲击力的计算机生成图像，推动计算机图形学技术不断向前发展。 
+*   **离轴高光 (Off-specular reflection)**：对于粗糙表面，最亮的高光可能偏离理想镜面反射方向。
+*   **逆反射 (Retroreflection)**：部分光线会沿着接近入射方向反向散射回来，这在观察满月或路标时可以看到（边缘和中心亮度相似）。
+
+#### 各向同性 (Isotropic) vs 各向异性 (Anisotropic) BRDF
+
+*   **各向同性 BRDF**：如果将入射和出射方向同时围绕表面法线 `n` 旋转，BRDF 的值保持不变。这通常发生在表面微结构在各个方向上统计均匀的情况下（如大多数塑料、磨砂玻璃）。此时，BRDF 只需要考虑入射极角 $\theta_i$、出射极角 $\theta_r$ 以及方位角之差 $\Delta\phi = \phi_r - \phi_i$，因此是一个**三维函数** $f_r(\theta_i, \theta_r, \Delta\phi)$。
+*   **各向异性 BRDF**：如果围绕法线旋转时 BRDF 值发生改变，则为各向异性。这通常发生在表面具有方向性微结构的情况下，如拉丝金属、绸缎、木纹、头发等。此时 BRDF 依赖于四个角度变量 $(\theta_i, \phi_i, \theta_r, \phi_r)$。
+
+#### Ward 模型
+
+Phong 和 Cook-Torrance 的原始形式通常是各向同性的。Ward 模型是处理**各向异性**反射的一个较早的著名模型。
+
+*   提出者：Gregory Ward (1992)。
+*   核心思想：使用椭圆高斯分布来描述微平面法线的分布，允许在不同切线方向上具有不同的粗糙度（用 $\alpha_x, \alpha_y$ 表示）。
+*   模型形式（包含漫反射和镜面反射项）：
+    *   **各向同性 Ward**:
+        $$ f_r = \frac{\rho_d}{\pi} + \frac{\rho_s}{4\pi\alpha^2\sqrt{(\mathbf{n}\cdot\mathbf{l})(\mathbf{n}\cdot\mathbf{v})}} \exp\left(-\frac{\tan^2\delta}{\alpha^2}\right) $$
+        其中 $\delta$ 是 `n` 和 `h` 的夹角，$\alpha$ 是表面坡度标准差（粗糙度）。
+    *   **各向异性 Ward**:
+        $$ f_r = \frac{\rho_d}{\pi} + \frac{\rho_s}{4\pi\alpha_x\alpha_y\sqrt{(\mathbf{n}\cdot\mathbf{l})(\mathbf{n}\cdot\mathbf{v})}} \exp\left[- \tan^2\delta \left(\frac{\cos^2\phi_h}{\alpha_x^2} + \frac{\sin^2\phi_h}{\alpha_y^2}\right)\right] $$
+        其中 $\phi_h$ 是半程向量 `h` 在切平面上的方位角，$\alpha_x, \alpha_y$ 是沿切平面 x, y 方向的粗糙度。
+*   **特点**：虽然引入了各向异性，但 Ward 模型通常被认为更偏向经验模型，因为它省略了菲涅尔项和精确的几何衰减项，使用了简化的归一化因子。
+
+![ward-model]({{ site.url }}/assets/img/2025-03-04-radiometry-and-brdf/ward-model.png)
+
+#### 其他物理模型
+
+*   **Oren-Nayar 模型 (1994)**：扩展了 Lambertian 模型，用于模拟更粗糙的漫反射表面（如月球表面、黏土）。它假设微平面本身是 Lambertian 反射体，并考虑了微平面间的遮挡和掩蔽效应，使得表面在掠射角下看起来更亮（与 Lambertian 不同）。
+*   **Poulin-Fournier 模型 (1990)**：使用一组平行的微小圆柱体来模拟各向异性表面（如拉丝金属）。
+![wave-optics-model]({{ site.url }}/assets/img/2025-03-04-radiometry-and-brdf/wave-optics-model.png){: width="972" height="589" .w-50 .right}
+*   **波动光学模型 (Wave Optics)**：当表面微结构尺寸与光的波长相当时，需要考虑光的衍射、干涉等波动效应。例如 He et al. (1991) 和 Stam (1999) 的工作。这些模型物理上更精确，能模拟彩虹色光泽（iridescence，如 CD 表面），但计算非常复杂，应用受限。
+
+### 数据驱动的模型 (Data-driven Models)
+
+当参数化模型无法准确捕捉某些复杂材质（如丝绸、天鹅绒）的外观时，可以使用数据驱动的方法。
+
+*   **核心思想**：直接测量真实材质样本在各种光照和观察方向下的 BRDF 值，将这些测量数据存储起来。
+*   **过程**：
+    1.  使用特定设备（见下一节）对材质进行大量采样，得到高维的 BRDF 数据点。
+    2.  由于原始数据量巨大（四维输入，一维输出），通常使用**降维技术**（如 PCA、NMF）来找到一个低维流形，用少量基函数或参数来表示 BRDF 数据。
+    3.  代表性工作：Matusik et al. (2003) "A Data-Driven Reflectance Model"。
+*   **优点**：能够非常灵活地表示各种复杂材质，无需对材质属性做假设。
+*   **缺点**：需要大量的测量数据和存储空间；通常需要插值来获取未测量方向的值，可能丢失高频细节（如锐利高光）；获取数据成本高。
+
+### BRDF 模型对比总结
+
+*   **经验模型**：计算快，实现简单，视觉效果尚可。物理不准确，参数意义模糊。
+*   **物理模型**：基于科学原理，参数具有物理意义，能模拟更多真实世界的反射现象，效果更逼真。通常计算更复杂。
+*   **数据驱动模型**：最灵活，能捕捉极其复杂的材质。需要大量数据和预处理，可能丢失细节，插值可能引入问题。
+
+现代 PBR (Physically Based Rendering) 流程主要依赖于物理模型（尤其是基于微平面的模型，如 Cook-Torrance 的变种 GGX），并结合数据驱动方法来获取或拟合模型参数。
+
+## BRDF 的度量与评价
+
+要使用物理或数据驱动模型渲染真实材质，首先需要获取这些材质的 BRDF 数据。
+
+*   **动机**：
+    *   为未知反射属性的新材料建模，以生成高度真实感的渲染结果。
+    *   **逆渲染 (Inverse Rendering)**：从图像中反推出场景属性（包括光照、几何和材质 BRDF）。
+*   **核心任务**：测量不同入射光方向 $\omega_i$ 和出射光方向 $\omega_r$ 组合下的 BRDF 值。
+
+### 度量设备 (Measurement Devices)
+
+测量 BRDF 通常需要复杂的设备，能够精确控制光源位置、相机位置以及样本姿态。
+
+1.  **Gonioreflectometer (测角反射计)**：最经典的设备类型。通常包含一个光源臂和一个探测器（相机）臂，两者可以围绕样本表面上的一个点独立旋转，覆盖入射和出射的半球空间。
+    *   可以固定样本，移动光源和相机。
+    *   可以固定光源，移动相机和样本。
+    *   Ward (1992) 开发了一种使用半镀银半球和鱼眼相机的 Gonioreflectometer，可以一次性采集整个半球的出射光信息，只需移动光源。
+
+2.  **Light Stage (光场舞台)**：由 Debevec et al. (2000) 开发，特别适用于采集人脸等复杂几何物体的反射属性（包括 BRDF 和后续会讲的 BSSRDF）。
+    *   通常是一个布满可控光源（如 LED）的球形或圆顶结构。
+    *   物体（或人）位于中心，从少数几个固定视角拍摄物体在不同光源（单个或组合）照射下的图像。
+    *   通过分析像素亮度随光照方向的变化，可以推断出表面的反射属性。
+
+### 现代 BRDF 度量方法（基于机器学习）
+
+传统的 BRDF 测量非常耗时（需要采样数千甚至数百万个方向组合）。近年来，研究者们利用机器学习来显著减少测量工作量。
+
+*   **思路**：用少量精心设计的**光照模式 (Lighting Patterns)**（即同时点亮多个光源的组合）进行测量，然后利用模型从这些少量测量结果中恢复出完整的 BRDF 信息或其关键参数。
+*   **示例流程 (基于自编码器)**：
+    1.  **Lumitexel 表示**：将一个表面点在大量（如 10240 个）独立光源照射下的亮度响应表示为一个高维向量（Lumitexel），这个向量隐式地编码了该点的 BRDF。
+    2.  **光照模式设计**：使用自编码器 (Autoencoder) 学习一个低维（如 32 维）的潜在空间来表示 Lumitexel。编码器的权重可以被解释为一组优化的光照模式。
+    3.  **测量**：实际测量时，只使用这 32 种光照模式进行照射，得到 32 个亮度值。
+    4.  **解码/恢复**：使用预先训练好的解码器（通常是全连接网络 FC），从这 32 个测量值恢复出完整的 10240 维 Lumitexel 近似值。
+    5.  **参数拟合**：可以选择一个参数化的 BRDF 模型（如常用的 GGX 模型 $f_r = \frac{D(\mathbf{h})F(\mathbf{h})G(\mathbf{l},\mathbf{v})}{4(\mathbf{n}\cdot\mathbf{l})(\mathbf{n}\cdot\mathbf{v})}$），然后根据恢复的 Lumitexel 数据回归出该模型的参数（如粗糙度、基色等）。
+    6.  **渲染**：使用拟合得到的 BRDF 参数在新的光照条件下进行渲染。
+
+这种方法大大提高了 BRDF 采集的效率。
+
+## 进阶：次表面散射 (Subsurface Scattering) 与 BSSRDF
+
+目前讨论的所有 BRDF 模型都基于一个共同的假设：光线与物体表面的交互只发生在表面无限薄的一层，光线要么被反射，要么被吸收，**不会进入物体内部再出来**。
+
+然而，现实世界中许多材质并非如此，它们是**半透明 (Translucent)** 的。例如：
+
+*   玉石、大理石
+*   蜡烛、肥皂
+*   牛奶、果汁
+*   皮肤、树叶
+
+对于这些材质，光线会进入物体内部，在内部经历多次散射事件，然后从表面**不同于入射点**的位置射出。仅使用 BRDF 无法模拟这种现象，会导致渲染结果看起来像塑料或油漆，缺乏柔和、通透的质感。
+
+### BTDF (Bidirectional Transmittance Distribution Function)
+
+为了描述光线进入物体内部的行为，需要引入**双向透射分布函数 (BTDF)**，它描述了光线从一个方向入射后，透射进入物体内部并在另一侧以某个方向射出的特性。
+
+### BSSRDF (Bidirectional Surface Scattering Reflectance Distribution Function)
+
+更通用的函数是**双向表面散射反射分布函数 (BSSRDF)**，它统一描述了光线在物体表面附近（包括表面反射和内部散射再出射）的所有散射行为。BSSRDF 是一个更复杂的八维函数 $S(x_i, \omega_i, x_o, \omega_o)$，它关联了入射点 $x_i$、入射方向 $\omega_i$、出射点 $x_o$ 和出射方向 $\omega_o$。
+
+*   **BSSRDF = BRDF (表面反射) + BTDF (透射) + 次表面散射**
+*   当入射点和出射点相同时 ($x_i = x_o$)，BSSRDF 就退化为 BRDF。
+
+### 次表面散射 (Subsurface Scattering, SSS)
+
+完全模拟 BSSRDF 的计算量极大，且测量 BSSRDF 非常困难。在实践中，常用**次表面散射 (SSS)** 技术来近似模拟光线在物体内部的散射效果。
+
+*   **核心思想**：光线进入物体后，在内部随机游走（散射），能量逐渐衰减。最终从附近某点射出。这个过程可以用扩散理论来近似。
+*   **实用模型**：Jensen et al. (2001) 在 SIGGRAPH 上发表的 "A Practical Model for Subsurface Light Transport" 是一个里程碑式的工作。它提出了一种基于**偶极子 (Dipole)** 或多极子扩散近似的方法，将复杂的内部散射问题简化为相对容易计算的扩散方程求解。该模型允许艺术家通过指定散射颜色、吸收颜色和散射距离等参数来控制材质的半透明外观。
+*   **感兴趣的读者可以参阅**：[https://graphics.stanford.edu/papers/bssrdf/bssrdf.pdf](https://graphics.stanford.edu/papers/bssrdf/bssrdf.pdf)
+
+次表面散射对于渲染皮肤、蜡、玉石等材质至关重要，能显著提升渲染的真实感。
+
+## 今日人物：Marc Levoy
+
+Marc Levoy 是计算机图形学领域的杰出学者和实践者，现为斯坦福大学教授和 Adobe 副总裁。他在多个领域做出了开创性贡献：
+
+*   **体绘制 (Volume Rendering)** (1980s)：开创了直接体绘制的技术。
+*   **三维扫描 (3D Laser Scanning)** (1990s)：领导了著名的 Digital Michelangelo Project，使用激光扫描技术高精度数字化米开朗基罗的雕塑。
+*   **计算摄影 (Computational Photography)**：对 Google 的街景 (Street View) 项目、Google Glass 以及智能手机摄影技术（如 HDR+, 人像模式）有重要贡献。
+
+Levoy 教授荣获多项大奖，包括 1996 年的 ACM SIGGRAPH 计算机图形学成就奖，并于 2007 年当选为 ACM Fellow。他的工作极大地推动了图形学和相关领域的发展。
+
+## 总结
+
+本文深入探讨了计算机图形学中用于描述材质表面反射特性的核心概念——**双向反射分布函数 (BRDF)**。我们从辐射度量学的基础知识出发，详细定义了 BRDF 及其关键性质（可逆性、能量守恒），并介绍了它在渲染方程中的核心作用。随后，我们分类讨论了常见的 BRDF 模型，包括简单的经验模型（Lambertian, Phong）、更精确的物理模型（Cook-Torrance, Ward）以及灵活的数据驱动模型。我们还了解了 BRDF 数据的测量方法，从传统的测角反射计到现代基于机器学习的高效技术。最后，我们认识到 BRDF 的局限性，并引入了更通用的 **BSSRDF** 和**次表面散射 (SSS)** 的概念，以处理玉石、皮肤等半透明材质的逼真渲染。
+
+理解和运用 BRDF 及其相关模型是实现高质量、物理真实感渲染的关键一步。
