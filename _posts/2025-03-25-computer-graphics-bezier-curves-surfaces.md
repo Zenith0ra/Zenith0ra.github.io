@@ -1,6 +1,6 @@
 ---
 title: 计算机图形学基础：Bézier 曲线与曲面详解
-categories: [Computer Science and Technology, Artificial Intelligence]
+categories: [Computer Science and Technology, Computer Graphics]
 tags: [Bézier-curve, Bézier-surface, geometric-modeling, Bernstein-polynomial, de-Casteljau-algorithm]
 math: true
 description: "本文深入解析计算机图形学中的Bézier曲线与曲面，涵盖几何造型历史、数学表示方法、Bernstein多项式性质、de Casteljau算法实现、几何连续性条件以及升阶降阶操作，详细讲解矩形域与三角域Bézier曲面的定义与转换，并介绍相关领域重要学者贡献。"
