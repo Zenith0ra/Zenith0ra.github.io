@@ -1,12 +1,10 @@
 ---
-title: Chengdu Chronicles: A Journey of Tech, Tradition, and Tenderness
+title: Chengdu Chronicles - A Journey of Tech, Tradition, and Tenderness
 categories: [Personal and Life, Travel and Experience]
 tags: [chengdu, tsinghua, food, travel]
 ---
 
 We were a group of eight Tsinghua University computer science students—laptops in tow, curiosity ablaze, and a shared itch for adventure. Our mission was clear: explore Chengdu as part of the "Digital Sichuan Innovation" practice, diving into how technology shapes this vibrant corner of Sichuan. But what we found was so much more than circuits and code. Chengdu unfolded before us like a warm embrace, blending cutting-edge innovation with traditions that felt like stories whispered from the past. By the end, it wasn’t just a trip—it was a love letter to a city that stole our hearts with its spice, its serenity, and its soul.
-
----
 
 ## Day One: Landing in Spice and Splendor
 
@@ -16,8 +14,6 @@ First stop: Taikoo Li, where sleek modern buildings cozied up to traditional Sic
 
 Dinner was our big hello to Sichuan food: hotpot. My friends, feeling bold, went for the “mild” option, only to learn that in Chengdu, “mild” still packs a punch. Their faces turned red as they fanned their mouths, while I stuck to a mushroom soup pot, dipping my shrimp in sesame sauce with a smug grin. The server gave us a knowing nod—she’d clearly seen this play out before. Later, we strolled along Jiu Yan Qiao, the Jinjiang River glittering like a mirror under the moon. Someone strummed a guitar in the distance, and as we debated which arch was the “ninth eye,” our laughter bounced off the water, startling a few drowsy birds. On the way back, a friend played *Chengdu* on their phone, and for a moment, it felt like the city was serenading us.
 
----
-
 ## Day Two: From Village Wisdom to Futuristic Wonders
 
 The next day took us to Guoxing Village in Chengdu’s eastern new area. We sat down with local officials and a Tsinghua alum, Liu Ruiyang, who’s pouring his heart into rural development. Over cups of tea, the village secretary shared tales of land management and community life in a Sichuan dialect that had us leaning in close. It hit me then: technology here isn’t just about data—it’s about listening to people, understanding their roots, and building something meaningful together.
@@ -26,15 +22,11 @@ By afternoon, we traded the village’s quiet charm for the buzz of the Intellig
 
 As dusk settled, we wandered into Dongjiao Memory, an old factory turned cultural hotspot. Rustic machinery now doubled as quirky café decor, and faded slogans shared space with chalkboard menus. It was like the past and present had decided to throw a party together—and we were the lucky guests. The day ended on Yulin Road, where skewers sizzled with promise. “Mild” was a lie again, and one bite sent me scrambling for iced lemon water as chili oil danced on my tongue. Chengdu, I decided, loves to keep you guessing.
 
----
-
 ## Day Three: Where Data Meets Serenity
 
 Day three led us to Chengdu Bank’s data center, a sleek world of cool air and glowing blue floors. Servers stood tall and silent, moving millions of transactions with a grace that felt almost poetic. Our guide, a Tsinghua senior, called it Sichuan’s quietest river—a stream of data flowing to serve the city. Watching the screens flicker, I thought of Dujiangyan’s ancient irrigation system, taming water for the people. Here, data did the same, just with a modern twist.
 
 After that high-tech plunge, we escaped to People’s Park, where time seemed to stretch and soften. At Heming Teahouse, we sipped jasmine tea from delicate gaiwans, the floral aroma blending with the faint tap of a craftsman’s hammer nearby. It was a slice of calm, a gentle nudge to breathe amid the rush of progress. Then came Kuanzhai Alley, a maze of narrow lanes where old courtyards met trendy shops, and the air hummed with the scents of incense and espresso. Dinner was a Sichuan feast—mapo tofu, twice-cooked pork, spicy fish—all bold and unapologetic. The tofu’s numbing heat had me gulping ice water, but every bite was a thrill worth chasing.
-
----
 
 ## Day Four: An Unexpected Adventure in Guanghan
 
@@ -42,15 +34,11 @@ On day four, we split up. Some snagged tickets to Sanxingdui Museum, while the r
 
 As night fell, I hit the Luo City night market. Stalls spilled over with bronze mask ice creams and skewers that set my taste buds ablaze. The air buzzed with chili fumes and chatter, and though I’d missed Sanxingdui’s relics, I’d found something alive and beating in Guanghan’s streets.
 
----
-
 ## Day Five: Pandas and the Art of Slow Living
 
 Our last day belonged to the pandas. At the Panda Base, we watched these fluffy icons munch bamboo, tumble down slopes, and nap like they had all the time in the world. Their calm was contagious, a quiet counterpoint to the tech whirlwind we’d been chasing. In the nursery, tiny cubs squirmed in their incubators, pink and perfect, drawing soft gasps from the crowd. Standing there, I felt a pang of awe—these creatures have thrived for millennia, their simple rhythms a kind of wisdom we could all stand to borrow.
 
 As we left, the Panda Tower loomed through the mist, a modern nod to the ancient bronze trees of Sanxingdui. It was the perfect goodbye to a trip that had woven past and present into something unforgettable.
-
----
 
 ## Reflections: A City of Balance and Warmth
 
