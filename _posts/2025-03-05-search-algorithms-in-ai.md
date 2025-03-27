@@ -27,7 +27,7 @@ description: "本文详细介绍人工智能中的搜索问题及其解决方法
 
 **搜索空间 (Search Space)** 通常指在求解过程中实际探索过的状态空间部分。理想情况下，我们希望搜索空间远小于整个**问题全状态空间**，以提高效率。
 
-![state-space-diagram]({{ site.url }}/assets/img/2025-03-05-search-algorithms-in-ai/state-space-diagram.png) *(编者注: 此处应插入类似幻灯片4的图示)*
+![state-space-diagram]({{ site.url }}/assets/img/2025-03-05-search-algorithms-in-ai/state-space-diagram.png) 
 
 > 图中 `S0` 代表初始状态，`Sg` 代表目标状态。整个椭圆代表问题的所有可能状态（全状态空间），阴影部分代表搜索过程中实际探索的状态（搜索空间），而连接 `S0` 和 `Sg` 的虚线则表示找到的一条解路径。
 
