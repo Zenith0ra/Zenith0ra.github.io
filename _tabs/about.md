@@ -16,7 +16,7 @@ order: 4
 
 # Professional Odyssey
 
-Welcome to my digital sanctuary — a confluence where algorithmic precision meets unbounded creativity. As an ardent Computer Science and Technology scholar at [Tsinghua University](https://www.tsinghua.edu.cn/) , I navigate the vast computational landscape with unwavering curiosity and methodical rigor. Currently immersed in my sophomore academic expedition, I am cultivating expertise across the multidimensional domains of computational theory, artificial intelligence architectures, and collaborative open-source ecosystems.
+Welcome to my digital sanctuary — a confluence where algorithmic precision meets unbounded creativity. As an ardent Computer Science and Technology scholar at [Tsinghua University](https://www.tsinghua.edu.cn/) , I navigate the vast computational landscape with unwavering curiosity and methodical rigor. Currently immersed in my junior academic expedition, I am cultivating expertise across the multidimensional domains of computational theory, artificial intelligence architectures, and collaborative open-source ecosystems.
 
 My intellectual compass orients toward pioneering solutions that transcend theoretical constructs to address tangible societal challenges. Like a digital cartographer, I seek to map uncharted territories where emerging technologies can catalyze transformative impact in our increasingly interconnected world.
 
