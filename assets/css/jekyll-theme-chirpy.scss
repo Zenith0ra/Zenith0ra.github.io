@@ -70,3 +70,25 @@ html:not([data-theme="dark"]) .contact-card a {
 [data-mode="dark"] .subtitle-container:hover {
   box-shadow: 0 4px 8px rgba(255,255,255,0.05);
 }
+
+/* === 统一视觉语言：对齐主站 houlinzhi.com === */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+html[data-mode="dark"] body {
+  background-color: #030303 !important;
+  font-family: 'Outfit', 'Microsoft YaHei', system-ui, sans-serif !important;
+}
+
+html[data-mode="dark"] code,
+html[data-mode="dark"] pre {
+  font-family: 'JetBrains Mono', Consolas, monospace !important;
+}
+
+html[data-mode="dark"] a {
+  color: #00d4ff !important;
+}
+
+html[data-mode="dark"] a:hover {
+  opacity: 0.8;
+}
