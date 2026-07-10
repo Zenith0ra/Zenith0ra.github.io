@@ -75,20 +75,20 @@ html:not([data-theme="dark"]) .contact-card a {
 
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
-html[data-mode="dark"] body {
+[data-bs-theme="dark"] body {
   background-color: #030303 !important;
   font-family: 'Outfit', 'Microsoft YaHei', system-ui, sans-serif !important;
 }
 
-html[data-mode="dark"] code,
-html[data-mode="dark"] pre {
+[data-bs-theme="dark"] code,
+[data-bs-theme="dark"] pre {
   font-family: 'JetBrains Mono', Consolas, monospace !important;
 }
 
-html[data-mode="dark"] a {
+[data-bs-theme="dark"] a {
   color: #00d4ff !important;
 }
 
-html[data-mode="dark"] a:hover {
+[data-bs-theme="dark"] a:hover {
   opacity: 0.8;
 }
