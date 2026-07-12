@@ -65,11 +65,11 @@ For Unix-like systems, you can set up the environment natively for optimal perfo
 1. Follow the [Jekyll installation guide](https://jekyllrb.com/docs/installation/) to install Jekyll and ensure [Git](https://git-scm.com/) is installed.
 2. Clone your repository to your local machine.
 3. If you forked the theme, install [Node.js][nodejs] and run `bash tools/init.sh` in the root directory to initialize the repository.
-4. Run command `bundle` in the root of your repository to install the dependencies.
+4. Run command `bundle install` in the root of your repository to install the dependencies.
 
 ## Writing a New Post
 
-This tutorial will guide you how to write a post in the _Chirpy_ template, and it's worth reading even if you've used Jekyll before, as many features require specific variables to be set.
+This tutorial will guide you on how to write a post in the _Chirpy_ template, and it's worth reading even if you've used Jekyll before, as many features require specific variables to be set.
 
 ### Naming and Path
 
@@ -83,7 +83,7 @@ Basically, you need to fill the [Front Matter](https://jekyllrb.com/docs/front-m
 ---
 title: TITLE
 date: YYYY-MM-DD HH:MM:SS +/-TTTT
-categories: [TOP_CATEGORIE, SUB_CATEGORIE]
+categories: [TOP_CATEGORY, SUB_CATEGORY]
 tags: [TAG]     # TAG names should always be lowercase
 ---
 ```
@@ -274,7 +274,7 @@ Here are examples of each type:
 
 ## Footnote
 
-Click the hook will locate the footnote[^footnote], and here is another footnote[^fn-nth-2].
+Clicking the hook will locate the footnote[^footnote], and here is another footnote[^fn-nth-2].
 
 ## Inline Code
 
@@ -617,6 +617,9 @@ image:
 ---
 ```
 
+> You can observe LQIP in the preview image of post "[Text and Typography](https://chirpy.cotes.page/posts/text-and-typography/)".
+{: .prompt-tip }
+
 For normal images:
 
 ```markdown
@@ -624,11 +627,9 @@ For normal images:
 ```
 {: .nolineno }
 
-### Video
+### Social Media Platforms
 
-#### Social Media Platform
-
-You can embed videos from social media platforms with the following syntax:
+You can embed video/audio from social media platforms with the following syntax:
 
 ```liquid
 {% include embed/{Platform}.html id='{ID}' %}
@@ -636,19 +637,25 @@ You can embed videos from social media platforms with the following syntax:
 
 Where `Platform` is the lowercase of the platform name, and `ID` is the video ID.
 
-The following table shows how to get the two parameters we need in a given video URL, and you can also know the currently supported video platforms.
+The following table shows how to get the two parameters we need in a given video/audio URL, and you can also know the currently supported video platforms.
 
 | Video URL                                                                                          | Platform   | ID             |
 | -------------------------------------------------------------------------------------------------- | ---------- | :------------- |
 | [https://www.**youtube**.com/watch?v=**H-B46URT4mg**](https://www.youtube.com/watch?v=H-B46URT4mg) | `youtube`  | `H-B46URT4mg`  |
 | [https://www.**twitch**.tv/videos/**1634779211**](https://www.twitch.tv/videos/1634779211)         | `twitch`   | `1634779211`   |
 | [https://www.**bilibili**.com/video/**BV1Q44y1B7Wf**](https://www.bilibili.com/video/BV1Q44y1B7Wf) | `bilibili` | `BV1Q44y1B7Wf` |
+| [https://open.**spotify**.com/track/**3OuMIIFP5TxM8tLXMWYPGV**](https://open.spotify.com/track/3OuMIIFP5TxM8tLXMWYPGV) | `spotify` | `3OuMIIFP5TxM8tLXMWYPGV` |
+
+Spotify supports some additional parameters:
+
+- `compact` - to display a compact player instead (ex. `{% include embed/spotify.html id='3OuMIIFP5TxM8tLXMWYPGV' compact=1 %}`);
+- `dark` - to force dark theme (ex. `{% include embed/spotify.html id='3OuMIIFP5TxM8tLXMWYPGV' dark=1 %}`).
 
 Here is a live example of a YouTube embed:
 
 {% include embed/youtube.html id='Balreaj8Yqs' %}
 
-#### Video Files
+### Video Files
 
 If you want to embed a video file directly, use the following syntax:
 
@@ -682,7 +689,7 @@ Consider an example using all of the above:
 %}
 ```
 
-### Audios
+### Audio Files
 
 If you want to embed an audio file directly, use the following syntax:
 
@@ -714,18 +721,17 @@ The [favicons](https://www.favicon-generator.org/about/) of [**Chirpy**](https:/
 
 ### Generate the favicon
 
-Prepare a square image (PNG, JPG, or SVG) with a size of 512x512 or more, and then go to the online tool [**Real Favicon Generator**](https://realfavicongenerator.net/) and click the button <kbd>Select your Favicon image</kbd> to upload your image file.
+Prepare a square image (PNG, JPG, or SVG) with a size of 512x512 or more, and then go to the online tool [**Real Favicon Generator**](https://realfavicongenerator.net/) and click the button <kbd>Pick your favicon image</kbd> to upload your image file.
 
-In the next step, the webpage will show all usage scenarios. You can keep the default options, scroll to the bottom of the page, and click the button <kbd>Generate your Favicons and HTML code</kbd> to generate the favicon.
+In the next step, the webpage will show all usage scenarios. You can keep the default options, scroll to the bottom of the page, and click the button <kbd>Next →</kbd> to generate the favicon.
 
 ### Download & Replace
 
-Download the generated package, unzip and delete the following two from the extracted files:
+Download the generated package, unzip and delete the following file(s) from the extracted files:
 
-- `browserconfig.xml`{: .filepath}
 - `site.webmanifest`{: .filepath}
 
-And then copy the remaining image files (`.PNG`{: .filepath} and `.ICO`{: .filepath}) to cover the original files in the directory `assets/img/favicons/`{: .filepath} of your Jekyll site. If your Jekyll site doesn't have this directory yet, just create one.
+And then copy the remaining image files (`.PNG`{: .filepath}, `.ICO`{: .filepath} and `.SVG`{: .filepath}) to cover the original files in the directory `assets/img/favicons/`{: .filepath} of your Jekyll site. If your Jekyll site doesn't have this directory yet, just create one.
 
 The following table will help you understand the changes to the favicon files:
 
@@ -733,6 +739,7 @@ The following table will help you understand the changes to the favicon files:
 | ------- | :--------------: | :---------: |
 | `*.PNG` |        ✓         |      ✗      |
 | `*.ICO` |        ✓         |      ✗      |
+| `*.SVG` |        ✓         |      ✗      |
 
 <!-- markdownlint-disable-next-line -->
 >  ✓ means keep, ✗ means delete.
@@ -747,7 +754,7 @@ The next time you build the site, the favicon will be replaced with a customized
 To run the site locally, use the following command:
 
 ```terminal
-$ bundle exec jekyll s
+$ bundle exec jekyll serve
 ```
 
 > If you are using Dev Containers, you must run that command in the **VS Code** Terminal.
@@ -784,7 +791,7 @@ Before deploying, check the `_config.yml`{: .filepath} file and ensure the `url`
 
 Now you can choose _ONE_ of the following methods to deploy your Jekyll site.
 
-### Deploy Using Github Actions
+### Deploy Using GitHub Actions
 
 Prepare the following:
 
