@@ -4,9 +4,9 @@ description: >-
   Get started with Chirpy basics in this comprehensive overview.
   You will learn how to install, configure, and use your first Chirpy-based website, as well as deploy it to a web server.
   This guide also covers writing posts, typography, math equations, diagrams, media, favicon customization, and more.
-date: 2019-08-08 11:33:00 +0800
+date: 2024-09-01 11:33:00 +0800
 categories: [Blog and Writing, Blog Setup and Maintenance]
-tags: [chirpy-theme, jekyll, github-pages, getting-started, writing, markdown, typography, formatting, favicon, website-setup, guide, setup]
+tags: [chirpy-theme, jekyll, github-pages, writing, markdown, typography, favicon]
 math: true
 mermaid: true
 render_with_liquid: false
@@ -653,7 +653,13 @@ Spotify supports some additional parameters:
 
 Here is a live example of a YouTube embed:
 
+<iframe width="100%" height="400" src="https://www.youtube.com/embed/Balreaj8Yqs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+The source code for the above embed:
+
+```liquid
 {% include embed/youtube.html id='Balreaj8Yqs' %}
+```
 
 ### Video Files
 
