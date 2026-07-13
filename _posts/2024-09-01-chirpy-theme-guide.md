@@ -15,7 +15,7 @@ image:
   alt: Responsive rendering of Chirpy theme on multiple devices.
 ---
 
-本文整合了 Chirpy 主题的官方教程，涵盖站点创建、环境配置、文章撰写、排版元素、媒体嵌入、Favicon 自定义与部署上线，可作为日常写博客的参考手册。
+This guide integrates the official Chirpy tutorials, covering site creation, environment setup, post writing, typography, media embedding, favicon customization, and deployment. It serves as a reference for day-to-day blog writing.
 
 ## Creating a Site Repository
 
@@ -753,7 +753,7 @@ The following table will help you understand the changes to the favicon files:
 
 The next time you build the site, the favicon will be replaced with a customized edition.
 
-## Configuration
+## Usage
 
 ### Start the Jekyll Server
 
